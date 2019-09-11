@@ -1,5 +1,5 @@
 function getPR(url, tabId) {
-	query = 'https://86fae67a.ngrok.io/&q=info:' + url;
+	query = 'https://cd27a506.ngrok.io/&q=info:' + url;
     fetch(query).then( response => response.json() ).then( myJson => {
             var value =  JSON.stringify(myJson) ; 
        
