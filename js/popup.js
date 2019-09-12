@@ -1,10 +1,10 @@
 
 function dispChromeSiteInfo(host) {
   document.write( '<iframe name="minisiteinfo" ' + 
-          'src="https://cd27a506.ngrok.io/minisite/' + host + '" ' +
+          'src="https://02bd22af.ngrok.io/minisite/' + host + '" ' +
                   'style="padding:0px; overflow:hidden;" '+
           'width="400px" ' +
-          'height="350px" ' +
+          'height="650px" ' +
           'marginwidth="5px" ' +
           'marginheight="5px" ' +
           'frameborder="0" ' +
