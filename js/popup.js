@@ -1,7 +1,7 @@
 
-function dispChromeSiteInfo(host) {
+function dispChromeSiteInfo(owner_name) {
   document.write( '<iframe name="minisiteinfo" ' + 
-          'src="https://02bd22af.ngrok.io/minisite/' + host + '" ' +
+          'src="https://02bd22af.ngrok.io/minisite/' + owner_name+ '" ' +
                   'style="padding:0px; overflow:hidden;" '+
           'width="400px" ' +
           'height="650px" ' +
@@ -15,14 +15,16 @@ function dispChromeSiteInfo(host) {
 
 function onLoad() {
     chrome.tabs.getSelected(null, function(tab) {
-      var url = tab.url;
-      if (url.match("http://\w*.?alexa.com/siteinfo/.*"))
-        var host = url.split("/")[4].split("?")[0].split("#")[0];
-      else if (url.match("http://\w*.?alexa.com/site/linksin/.*"))
-        var host = url.split("/")[5].split("?")[0].split("#")[0];     
-      else
-        var host = url.split("/")[2].split("?")[0].split("#")[0];
-      dispChromeSiteInfo(host);
+     var url = tab.url;
+
+     var loc = new URL(url);
+     let found = loc.pathname.match(/\/(.*)\/(.*)/);
+     if ( !found || found.length < 3 || loc.hostname != 'github.com') return;
+
+    let foo, owner, name;
+    [foo, owner, name] = loc.pathname.split("/");
+
+      dispChromeSiteInfo( owner + "/" + name);
     });
 };
 

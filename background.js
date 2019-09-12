@@ -2,13 +2,7 @@ function getPR(url, tabId) {
     var loc = new URL(url);
     let found = loc.pathname.match(/\/(.*)\/(.*)/);
     if ( !found || found.length < 3 || loc.hostname != 'github.com') return;
-
-    /*
-    let owner = found[1];
-    let repo = found[2];
-    */
-
-	query = 'https://02bd22af.ngrok.io/&q=info:' + url;
+   	query = 'https://02bd22af.ngrok.io/&q=info:' + url;
     fetch(query).then( response => response.json() ).then( myJson => {
             var value =  JSON.stringify(myJson) ; 
        
