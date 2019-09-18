@@ -1,7 +1,7 @@
 
 function dispChromeSiteInfo(owner_name) {
   document.write( '<iframe name="minisiteinfo" ' + 
-          'src="https://9fcb2903.ngrok.io/minisite/' + owner_name+ '" ' +
+          'src="http://localhost:3000/minisite/' + owner_name+ '" ' +
                   'style="padding:0px; overflow:hidden;" '+
           'width="400px" ' +
           'height="650px" ' +
