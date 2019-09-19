@@ -1,7 +1,7 @@
 
 function dispChromeSiteInfo(owner_name) {
   document.write( '<iframe name="minisiteinfo" ' + 
-          'src="http://localhost:3000/minisite/' + owner_name+ '" ' +
+          'src="http://167.71.248.67:3000/minisite/' + owner_name+ '" ' +
                   'style="padding:0px; overflow:hidden;" '+
           'width="400px" ' +
           'height="650px" ' +
