@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
+Adapted from Zotero, thanks to their GPL license:
+
 ***** BEGIN LICENSE BLOCK *****
 
 Copyright © 2011 Center for History and New Media
@@ -39,14 +41,14 @@ the Free Software Foundation, either version 3 of the License, or
 			</div>
 			<div id="content-general" class="content selected">
 				<div class="group">
-					<div class="group-title">OSSinSE Status</div>
-					<div class="group-content" id="client-status"><div><p>OSSinSE is currently <span>unavailable. If OSSinSE is open, see the <a href="https://www.zotero.org/support/kb/connector_zotero_unavailable">troubleshooting page</a>.</span></p><p><input type="button" value="Update Status"></p></div></div>
+					<div class="group-title">OSSinSE Rubric</div>
+					<div class="group-content" id="client-status"><div><p>Edit the OSSinSE Metrics. Here you can add/delete/edit each quality attribute of an OSS project, alongside the grading assigned to each threshold</p><p><input type="button" value="Edit metrics"></p></div></div>
 					</div>
 					<div class="group">
 						<div class="group-title">Save to OSSinSE.org</div>
 						<div class="group-content">
 							<div id="general-authorization-not-authorized" style="display: block;">
-								<p>OSSinSE Connector must be authorized in order to save items to zotero.org when OSSinSE is not open.</p>
+								<p>OSSinSE must be authorized in order to save metrics and share them with other users.</p>
 								<p><input type="button" value="Authorize" id="general-button-authorize"></p>
 								</div>
 								<div id="general-authorization-authorized" style="display:none">
@@ -62,5 +64,7 @@ the Free Software Foundation, either version 3 of the License, or
 														</div>
 													</div>
 												</div>
+
+												<script type="text/javascript" src="preferences.js"></script>
 													</body>
 												</html>
