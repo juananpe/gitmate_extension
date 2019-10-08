@@ -13,8 +13,9 @@
 		"client_id": "495853776801-iohaio2qq0qprr5jv9k78upd6mmj9ck7.apps.googleusercontent.com",
 		"scopes":[""]
 	},
+	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
 	"background": {
-		"scripts": ["background.js"],
+		"scripts": ["js/3rd/filtrex.js","background.js"],
 		"persistent": false
 	},
 	"browser_action": {
