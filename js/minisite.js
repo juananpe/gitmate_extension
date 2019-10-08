@@ -27,9 +27,13 @@ var data = {
         raw : 12,
         value: 15,
     },
-    documentationFriendly: {
-        raw : 20,
-        value: 15,
+    docWiki: {
+        raw : 10,
+        value: 1,
+    },
+    docWeb: {
+        raw : 1,
+        value: 1,
     },
     contributionOpportunities: {
         raw : 60,
