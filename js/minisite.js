@@ -1,8 +1,41 @@
 const params = new URLSearchParams(window.location.search);
-const name = params.get("q");
+const owner = params.get("owner");
+const url = params.get("url");
 let suitability = 65;
 
-var data = {
+
+function draw(criteria){
+    return criteria.raw + " (+" + criteria.value + ")";
+}
+
+chrome.storage.sync.get(url, function(jsonData) {
+    // console.log("result:");
+    let data = jsonData[url];
+
+    $(document).ready( function() {
+        $("#domain").text( owner );
+
+
+        Object.keys(data).forEach( k => {
+            let name = "#" + k;
+            $(name).text( draw(data[k]) );
+        });
+
+        $("#suitability").text( suitability );
+
+        document.title = name;
+
+    })
+
+
+});
+
+
+
+
+
+
+/* var data = {
     popularity: {
         raw : 900,
         value: 5,
@@ -47,25 +80,5 @@ var data = {
         raw : 30,
         value: 15,
     },
-}
+}*/
 
-
-function draw(criteria){
-    return criteria.raw + " (+" + criteria.value + ")";
-}
-
-
-$(document).ready( function() {
-    $("#domain").text( name );
-
-
-    Object.keys(data).forEach( k => {
-        let name = "#" + k;
-        $(name).text( draw(data[k]) );
-    });
-
-    $("#suitability").text( suitability );
-
-    document.title = name; 
-
-})

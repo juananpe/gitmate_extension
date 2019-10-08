@@ -8,7 +8,9 @@
 		"open_in_tab": true,
 		"page": "preferences/preferences.html"
 	},
-
+  "icons": { "16": "img/thermo16x16.png",
+    "48": "img/thermo48x48.png"
+  },
 	"oauth2": {
 		"client_id": "495853776801-iohaio2qq0qprr5jv9k78upd6mmj9ck7.apps.googleusercontent.com",
 		"scopes":[""]
@@ -19,8 +21,8 @@
 		"persistent": false
 	},
 	"browser_action": {
-		"default_icon": "img/0.png",
-		"default_popup": "popup.html",
+      "default_icon": "img/thermo48x48.png",
+      "default_popup": "popup.html",
 		"default_title": "Page has no PR"
 	},
 	"manifest_version": 2
