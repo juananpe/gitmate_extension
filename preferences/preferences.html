@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Adapted from Zotero, thanks to their GPL license:
+Adapted from Zotero, thanks to their GNU Affero GPLv3 license:
 
 ***** BEGIN LICENSE BLOCK *****
 
@@ -23,6 +23,13 @@ the Free Software Foundation, either version 3 of the License, or
 		<meta charset="UTF-8">
 			<link rel="stylesheet" type="text/css" media="screen" href="preferences.css" />
 			<title>OSSinSE Connector Preferences</title>
+
+		<!-- TABULATOR -->
+			<link href="/css/3rd/tabulator.min.css" rel="stylesheet">
+			<script type="text/javascript" src="/js/3rd/tabulator.min.js"></script>
+			<script type="text/javascript" src="/js/tabledata.js"></script>
+		<!-- /TABULATOR -->
+
 		</head>
 		<body>
 			<div id="panes">
@@ -40,9 +47,18 @@ the Free Software Foundation, either version 3 of the License, or
 				</div>
 			</div>
 			<div id="content-general" class="content selected">
-				<div class="group">
-					<div class="group-title">OSSinSE Rubric</div>
-					<div class="group-content" id="client-status"><div><p>Edit the OSSinSE Metrics. Here you can add/delete/edit each quality attribute of an OSS project, alongside the grading assigned to each threshold</p><p><input type="button" value="Edit metrics"></p></div></div>
+				    <div class="group">
+						<div class="group-title">OSSinSE Rubric</div>
+							<div class="group-content" id="client-status">
+								<div>
+									<p>Edit the OSSinSE Metrics. Here you can add/delete/edit each quality attribute of an OSS project, alongside the grading assigned to each threshold</p>
+
+									<div id="example-table"></div>
+
+
+									<p><input type="button" value="Edit metrics"></p>
+								</div>
+							</div>
 					</div>
 					<div class="group">
 						<div class="group-title">Save to OSSinSE.org</div>
