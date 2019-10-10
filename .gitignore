@@ -1,2 +1,5 @@
 /ossinse_extension.iml
 /.idea/
+*.bak
+.DS_Store
+

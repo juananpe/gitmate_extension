@@ -17,11 +17,13 @@ chrome.storage.sync.get(url, function(jsonData) {
 
 
         Object.keys(data).forEach( k => {
-            let name = "#" + k;
-            $(name).text( draw(data[k]) );
+            if (k != "suitability"){
+                let name = "#" + k;
+                $(name).text( draw(data[k]) );
+            }
         });
 
-        $("#suitability").text( suitability );
+        $("#suitability").text( data.suitability );
 
         document.title = name;
 
