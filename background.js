@@ -88,7 +88,7 @@ chrome.runtime.onInstalled.addListener(function() {
         {id: 5, name: "forkDegree", A: "v>50", B: "v>40", C: "v>30", D: "v>20"},
         {id: 6, name: "beginnerFriendly", A: "v>10", B: "v>8", C: "v>6", D: "v>4"},
         {id: 7, name: "docWiki", A: "v>10", B: "v>7", C: "v>5", D: "v>=3"},
-        {id: 7, name: "docWeb", A: "v>0", B: "v!=v", C: "v!=v", D: "v!=v"},
+        {id: 7, name: "docWeb", A: "v", B: "v!=v", C: "v!=v", D: "v!=v"},
         {id: 9, name: "contributionOpportunities", A: "v>200", B: "v>100", C: "v>75", D: "v>50"},
         {id: 10, name: "closingFactor", A: "v>0.25", B: "v>0.20", C: "v>0.15", D: "v>0.10"},
         {id: 11, name: "pullRequests", A: "v>200", B: "v>100", C: "v>50", D: "v>25"},
