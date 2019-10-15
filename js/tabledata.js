@@ -10,10 +10,11 @@ window.onload = function () {
 //  (#of current issues opened)
 //  (#issues closed during last year)
 
+    let tabla;
 
     chrome.storage.sync.get("tabledata", tablearray => {
 
-        var table = new Tabulator("#example-table", {
+        tabla = new Tabulator("#example-table", {
             data:   tablearray.tabledata,           //load row data from array
 
             responsiveLayout: "hide",  //hide columns that dont fit on the table
@@ -34,5 +35,8 @@ window.onload = function () {
                 {title: "D", field: "D", width: 130, editor: "input"},
             ],
         });
+        OSSinSE_Preferences.table = tabla;
     });
+
+
 };

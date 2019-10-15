@@ -19,68 +19,74 @@ the Free Software Foundation, either version 3 of the License, or
 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-		<meta charset="UTF-8">
-			<link rel="stylesheet" type="text/css" media="screen" href="preferences.css" />
-			<title>OSSinSE Connector Preferences</title>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" media="screen" href="preferences.css"/>
 
-		<!-- TABULATOR -->
-			<link href="/css/3rd/tabulator.min.css" rel="stylesheet">
-			<script type="text/javascript" src="/js/3rd/tabulator.min.js"></script>
-			<script type="text/javascript" src="/js/tabledata.js"></script>
-		<!-- /TABULATOR -->
+    <!-- TABULATOR -->
+    <link href="/css/3rd/tabulator.min.css" rel="stylesheet">
+    <!-- /TABULATOR -->
 
-		</head>
-		<body>
-			<div id="panes">
-				<div id="pane-general" class="pane selected">
-					<div class="pane-image"><img src="../img/prefs-general.png" alt=""/></div>
-					<a href="#general" class="pane-label">General</a>
-				</div>
-				<div id="pane-proxies" class="pane">
-					<div class="pane-image"><img src="../img/prefs-proxies.png" alt=""/></div>
-					<a href="#proxies" class="pane-label">Proxies</a>
-				</div>
-				<div id="pane-advanced" class="pane">
-					<div class="pane-image"><img src="../img/prefs-advanced.png" alt=""/></div>
-					<a href="#advanced" class="pane-label">Advanced</a>
-				</div>
-			</div>
-			<div id="content-general" class="content selected">
-				    <div class="group">
-						<div class="group-title">OSSinSE Rubric</div>
-							<div class="group-content" id="client-status">
-								<div>
-									<p>Edit the OSSinSE Metrics. Here you can add/delete/edit each quality attribute of an OSS project, alongside the grading assigned to each threshold</p>
+    <title>OSSinSE Connector Preferences</title>
+</head>
+<body>
+<div id="panes">
+    <div id="pane-general" class="pane selected">
+        <div class="pane-image"><img src="../img/prefs-general.png" alt=""/></div>
+        <a href="#general" class="pane-label">General</a>
+    </div>
+    <div id="pane-proxies" class="pane">
+        <div class="pane-image"><img src="../img/prefs-proxies.png" alt=""/></div>
+        <a href="#proxies" class="pane-label">Proxies</a>
+    </div>
+    <div id="pane-advanced" class="pane">
+        <div class="pane-image"><img src="../img/prefs-advanced.png" alt=""/></div>
+        <a href="#advanced" class="pane-label">Advanced</a>
+    </div>
+</div>
+<div id="content-general" class="content selected">
+    <div class="group">
+        <div class="group-title">OSSinSE Rubric</div>
+        <div class="group-content" id="client-status">
+            <div>
+                <p>Edit the OSSinSE Metrics. Here you can add/delete/edit each quality attribute of an OSS project,
+                    alongside the grading assigned to each threshold</p>
 
-									<div id="example-table"></div>
+                <div id="example-table"></div>
 
 
-									<p><input type="button" value="Edit metrics"></p>
-								</div>
-							</div>
-					</div>
-					<div class="group">
-						<div class="group-title">Save to OSSinSE.org</div>
-						<div class="group-content">
-							<div id="general-authorization-not-authorized" style="display: block;">
-								<p>OSSinSE must be authorized in order to save metrics and share them with other users.</p>
-								<p><input type="button" value="Authorize" id="general-button-authorize"></p>
-								</div>
-								<div id="general-authorization-authorized" style="display:none">
-									<p>OSSinSE Connector will save items to zotero.org as <span id="general-span-authorization-username"></span> when OSSinSE is not open.</p>
-									<p>
-										<input type="button" value="Reauthorize" id="general-button-reauthorize">
-											<input type="button" value="Clear Credentials" id="general-button-clear-credentials">
-											</p>
-											<p>
-												<label><input type="checkbox" data-pref="automaticSnapshots">&nbsp;Automatically take snapshots when saving items</label><br>
-														<label><input type="checkbox" data-pref="downloadAssociatedFiles">&nbsp;Automatically download associated PDFs and other files when saving items</label><br>
-															</p>
-														</div>
-													</div>
-												</div>
-
-												<script type="text/javascript" src="preferences.js"></script>
-													</body>
-												</html>
+                <p><input type="button" value="Edit metrics" id="editmetrics"></p>
+            </div>
+        </div>
+    </div>
+    <div class="group">
+        <div class="group-title">Save to OSSinSE.org</div>
+        <div class="group-content">
+            <div id="general-authorization-not-authorized" style="display: block;">
+                <p>OSSinSE must be authorized in order to save metrics and share them with other users.</p>
+                <p><input type="button" value="Authorize" id="general-button-authorize"></p>
+            </div>
+            <div id="general-authorization-authorized" style="display:none">
+                <p>OSSinSE Connector will save items to zotero.org as <span
+                        id="general-span-authorization-username"></span> when OSSinSE is not open.</p>
+                <p>
+                    <input type="button" value="Reauthorize" id="general-button-reauthorize">
+                    <input type="button" value="Clear Credentials" id="general-button-clear-credentials">
+                </p>
+                <p>
+                    <label><input type="checkbox" data-pref="automaticSnapshots">&nbsp;Automatically take snapshots when
+                        saving items</label><br>
+                    <label><input type="checkbox" data-pref="downloadAssociatedFiles">&nbsp;Automatically download
+                        associated PDFs and other files when saving items</label><br>
+                </p>
+            </div>
+        </div>
+    </div>
+    <!-- TABULATOR -->
+    <script type="text/javascript" src="/js/3rd/tabulator.min.js"></script>
+    <script type="text/javascript" src="/js/tabledata.js"></script>
+    <!-- /TABULATOR -->
+    <script type="text/javascript" src="preferences.js"></script>
+</div>
+</body>
+</html>
