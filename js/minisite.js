@@ -1,10 +1,24 @@
 const params = new URLSearchParams(window.location.search);
 const owner = params.get("owner");
 const url = params.get("url");
+let storedURLs;
 
 function draw(criteria){
     return criteria.raw + " (+" + criteria.value + ")";
 }
+
+function drawURL(obj){
+	let element = document.querySelector("#tools > ul")
+	let li = document.createElement("li");
+	let ahref = document.createElement('a');
+	let linkText = document.createTextNode(obj.owner);
+	ahref.appendChild(linkText);
+	ahref.title = obj.owner;
+	ahref.href = obj.href;
+	li.appendChild(ahref);
+	element.appendChild(li)
+}
+
 
 chrome.storage.sync.get(url, function(jsonData) {
     let data = jsonData[url];
@@ -29,7 +43,15 @@ chrome.storage.sync.get(url, function(jsonData) {
 
 });
 
-
+let readURLs = function() {
+	chrome.storage.sync.get("storedurls", function (jsonURLs) {
+		// storedURLs = JSON.parse(jsonURLs);
+		storedURLs = jsonURLs.storedurls;
+		storedURLs.urls.forEach( e => {
+			drawURL(e);
+		})
+	})
+}
 
 			$(document).ready(function(){
 				var docked = 0;
@@ -85,5 +107,24 @@ chrome.storage.sync.get(url, function(jsonData) {
                 $("#dock li").click(function(){
 					    $(this).find("ul").animate({right:"20px",width:'180px'}, 200);
 					});
-				}); 
+
+				$("#colorgreen").click( function () {
+
+
+					let newurl = {
+						"owner" : owner,
+						"href": window.location.search
+					}
+
+					drawURL(newurl);
+					storedURLs['urls'].push(newurl);
+					chrome.storage.sync.set({"storedurls": storedURLs });
+
+				})
+
+				readURLs();
+
+
+			});
+
 
