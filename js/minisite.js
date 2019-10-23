@@ -4,7 +4,11 @@ const url = params.get("url");
 let storedURLs;
 
 function draw(criteria){
-    return criteria.raw + " (+" + criteria.value + ")";
+	let style = "bad";
+	if (criteria.value >= 0.5)
+		style = "good";
+
+    return criteria.raw + " <span class='" + style + "'>(+" + criteria.value + ")</span>";
 }
 
 function drawURL(obj){
@@ -30,7 +34,7 @@ chrome.storage.sync.get(url, function(jsonData) {
         Object.keys(data).forEach( k => {
             if (k != "suitability"){
                 let name = "#" + k;
-                $(name).text( draw(data[k]) );
+                $(name).html( draw(data[k]) );
             }
         });
 
