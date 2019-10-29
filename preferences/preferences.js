@@ -8,7 +8,7 @@ var OSSinSE_Preferences = {
 
 	};
 
-document.getElementById("editmetrics").onclick = function(){
+document.getElementById("savemetrics").onclick = function(){
 	console.log('clicked')
 	// console.log(OSSinSE_Preferences.table);
 	chrome.storage.sync.set({"tabledata": OSSinSE_Preferences.table.getData()});

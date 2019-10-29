@@ -13,13 +13,16 @@ function getPR(url, tabId) {
         fetch(query).then(response => response.json()).then(data => {
             var sum = 0;
             tablearray.tabledata.forEach((c, idx) => {
+
+                data[c.name].weight = c['W']; // set weight for this criteria
+
                 var found = false;
                 for (var ind = 0; ind < keys.length && !found; ind++) {
                     var myfilter = compileExpression(c[keys[ind]]);
                     if (myfilter({v: data[c.name].raw})) {
-                        sum += grading[ind];
+                        sum += grading[ind] * c['W']; // weighted grading
                         data[c.name].value = grading[ind];
-                        console.log(c['name'] + " Grade: " + grading[ind]);
+                        console.log(c['name'] + " Grade: " + grading[ind] + " Weight: " + c['W']);
                         found = true;
                     }
                 }
@@ -28,12 +31,12 @@ function getPR(url, tabId) {
                 }
             });
 
-            data.suitability = sum;
+            data.suitability = sum>10?10:sum; // cap the suitability value
             chrome.storage.sync.set({[url]: data}, function () {
                 // console.log("Set value:" + url + ':' + value);
             });
 
-            updatePR(sum.toString(), url, tabId);
+            updatePR(data.suitability.toString(), url, tabId);
         });
 
     });
@@ -81,17 +84,17 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo) {
 chrome.runtime.onInstalled.addListener(function() {
 
     let tabledata = [
-        {id: 1, name: "popularity", A: "v>=500", B: "v>=400", C: "v>=300", D: "v>=200"},
-        {id: 2, name: "workForce", A: "v>=10 ", B: "v>8", C: "v>6", D: "v>4"},
-        {id: 3, name: "recentActivity", A: "v<=2", B: "v<=7", C: "v>7 and v<=14", D: "v<= 21"},
-        {id: 4, name: "continuousActivity", A: "v>40", B: "v>30", C: "v>20", D: "v>10"},
-        {id: 5, name: "forkDegree", A: "v>50", B: "v>40", C: "v>30", D: "v>20"},
-        {id: 6, name: "beginnerFriendly", A: "v>10", B: "v>8", C: "v>6", D: "v>4"},
-        {id: 7, name: "docWiki", A: "v>10", B: "v>7", C: "v>5", D: "v>=3"},
-        {id: 7, name: "docWeb", A: "v", B: "v!=v", C: "v!=v", D: "v!=v"},
-        {id: 9, name: "contributionOpportunities", A: "v>200", B: "v>100", C: "v>75", D: "v>50"},
-        {id: 10, name: "closingFactor", A: "v>0.25", B: "v>0.20", C: "v>0.15", D: "v>0.10"},
-        {id: 11, name: "pullRequests", A: "v>200", B: "v>100", C: "v>50", D: "v>25"},
+        {id: 1, name: "popularity", A: "v>=500", B: "v>=400", C: "v>=300", D: "v>=200", W: "1"},
+        {id: 2, name: "workForce", A: "v>=10 ", B: "v>8", C: "v>6", D: "v>4", W: "1"},
+        {id: 3, name: "recentActivity", A: "v<=2", B: "v<=7", C: "v>7 and v<=14", D: "v<= 21", W: "1"},
+        {id: 4, name: "continuousActivity", A: "v>40", B: "v>30", C: "v>20", D: "v>10", W: "1"},
+        {id: 5, name: "forkDegree", A: "v>50", B: "v>40", C: "v>30", D: "v>20", W: "1"},
+        {id: 6, name: "beginnerFriendly", A: "v>10", B: "v>8", C: "v>6", D: "v>4", W: "1"},
+        {id: 7, name: "docWiki", A: "v>10", B: "v>7", C: "v>5", D: "v>=3", W: "1"},
+        {id: 7, name: "docWeb", A: "v", B: "v!=v", C: "v!=v", D: "v!=v", W: "1"},
+        {id: 9, name: "contributionOpportunities", A: "v>200", B: "v>100", C: "v>75", D: "v>50", W: "1"},
+        {id: 10, name: "closingFactor", A: "v>0.25", B: "v>0.20", C: "v>0.15", D: "v>0.10", W: "1"},
+        {id: 11, name: "pullRequests", A: "v>200", B: "v>100", C: "v>50", D: "v>25", W: "1"},
     ];
 
     chrome.storage.sync.set({"tabledata": tabledata});

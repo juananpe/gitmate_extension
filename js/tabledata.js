@@ -33,6 +33,7 @@ window.onload = function () {
                 {title: "B", field: "B", width: 130, editor: "input"},
                 {title: "C", field: "C", width: 130, editor: "input"},
                 {title: "D", field: "D", width: 130, editor: "input"},
+                {title: "Weight", field: "W", width: 130, editor: "input"},
             ],
         });
         OSSinSE_Preferences.table = tabla;

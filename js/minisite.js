@@ -8,7 +8,8 @@ function draw(criteria){
 	if (criteria.value >= 0.5)
 		style = "good";
 
-    return criteria.raw + " <span class='" + style + "'>(+" + criteria.value + ")</span>";
+    return criteria.raw + " <span class='" + style + "'>(+" + criteria.value + ")</span>" +
+		  "<div class='label'>(weight:" + criteria.weight  + ")</div>";
 }
 
 function drawURL(obj){

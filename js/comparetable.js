@@ -11,40 +11,59 @@ window.onload = function () {
 //  (#issues closed during last year)
 
     let tabla;
+    let storedURLs;
+    let keys = ["beginnerFriendly", "closingFactor", "continuousActivity", "contributionOpportunities", "docWeb", "docWiki", "forkDegree", "popularity", "pullRequests", "recentActivity", "suitability", "workForce"];
+    let projects = [];
+    let rows = [];
+    let id = 0;
+
 
     chrome.storage.sync.get("storedurls", storedurls => {
-        storedurls = storedurls.storedurls;
+        storedURLs = storedurls.storedurls;
 
+        storedURLs.urls.forEach(e => {
+            let project = "https://github.com/" + e.owner;
+            projects.push(project);
+            chrome.storage.sync.get(project, result => {
+                obj = {};
+                keys.forEach( key => {
+                    // tabledata[key].push(result[project][key].value);
+                    obj[key] = result[project][key].value;
+                })
+                obj["name"] = e.owner;
+                obj["id"] = id++;
 
-        chrome.storage.sync.get("https://github.com/bardsoftware/ganttproject", project => {
-            console.log(project["https://github.com/bardsoftware/ganttproject"]);
+                rows.push(obj);
+            })
+        })
 
-            chrome.storage.sync.get("tabledata", tablearray => {
+        setTimeout(() => {
 
-                tabla = new Tabulator("#example-table", {
-                    data: tablearray.tabledata,           //load row data from array
+            console.log(rows);
 
-                    responsiveLayout: "hide",  //hide columns that dont fit on the table
-                    tooltips: true,            //show tool tips on cells
-                    addRowPos: "top",          //when adding a new row, add it to the top of the table
-                    history: true,             //allow undo and redo actions on the table
-                    movableColumns: true,      //allow column order to be changed
-                    resizableRows: true,       //allow row order to be changed
-                    initialSort: [             //set the initial sort order of the data
-                        {column: "name", dir: "asc"},
-                    ],
-                    columns: [                 //define the table columns
-                        {title: "Name", field: "name"},
-
-                        {title: storedurls.urls[0].owner, field: "A", width: 130, editor: "input"},
-                        {title: "ProjectB", field: "B", width: 130, editor: "input"},
-                        {title: "ProjectC", field: "C", width: 130, editor: "input"},
-                        {title: "ProjectD", field: "D", width: 130, editor: "input"},
-                    ],
-                });
-                OSSinSE_Preferences.table = tabla;
+            tabla = new Tabulator("#example-table", {
+                data: rows,           //load row data from array
+                responsiveLayout: "hide",  //hide columns that dont fit on the table
+                tooltips: true,            //show tool tips on cells
+                addRowPos: "top",          //when adding a new row, add it to the top of the table
+                history: true,             //allow undo and redo actions on the table
+                movableColumns: true,      //allow column order to be changed
+                resizableRows: true,       //allow row order to be changed
+                initialSort: [             //set the initial sort order of the data
+                    {column: "name", dir: "asc"},
+                ],
+                columns: [                 //define the table columns
+                    {title: "Project", field: "name"},
+                    // let keys = ["beginnerFriendly", "closingFactor", "continuousActivity", "contributionOpportunities", "docWeb", "docWiki", "forkDegree", "popularity", "pullRequests", "recentActivity", "suitability", "workForce"];
+                    {title: "beginnerFriendly" , field: "beginnerFriendly", width: 130, editor: "input"},
+                    {title: "closingFactor", field: "closingFactor", width: 130, editor: "input"},
+                    {title: "continuousActivity", field: "continuousActivity", width: 130, editor: "input"},
+                    {title: "contributionOpportunities", field: "contributionOpportunities", width: 130, editor: "input"},
+                ],
             });
-        });
+            // OSSinSE_Preferences.table = tabla;
+        }, 1000);
+
     });
 
 
