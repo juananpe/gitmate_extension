@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Adapted from Zotero, thanks to their GNU Affero GPLv3 license:
+
+***** BEGIN LICENSE BLOCK *****
+
+Copyright © 2011 Center for History and New Media
+George Mason University, Fairfax, Virginia, USA
+http://zotero.org
+
+This file is part of OSSinSE.
+
+OSSinSE is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+***** END LICENSE BLOCK *****
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" media="screen" href="preferences.css"/>
+
+    <!-- TABULATOR -->
+    <link href="/css/3rd/tabulator.min.css" rel="stylesheet">
+    <!-- /TABULATOR -->
+
+    <title>OSSinSE Connector Preferences</title>
+</head>
+<body>
+<div id="panes">
+    <div id="pane-general" class="pane ">
+        <div class="pane-image"><img src="../img/prefs-general.png" alt=""/></div>
+        <a href="#general" class="pane-label">General</a>
+    </div>
+    <div id="pane-proxies" class="pane selected">
+        <div class="pane-image"><img src="../img/prefs-proxies.png" alt=""/></div>
+        <a href="#proxies" class="pane-label">Proxies</a>
+    </div>
+    <div id="pane-advanced" class="pane">
+        <div class="pane-image"><img src="../img/prefs-advanced.png" alt=""/></div>
+        <a href="#advanced" class="pane-label">Advanced</a>
+    </div>
+</div>
+<div id="content-general" class="content selected">
+    <div class="group">
+        <div class="group-title">Compare Projects</div>
+        <div class="group-content" id="client-status">
+            <div>
+                <p>Compare OSSinSE Metrics from different projects.</p>
+
+                <div id="example-table"></div>
+
+            </div>
+        </div>
+    </div>
+    <!-- TABULATOR -->
+    <script type="text/javascript" src="/js/3rd/tabulator.min.js"></script>
+    <script type="text/javascript" src="/js/comparetable.js"></script>
+    <!-- /TABULATOR -->
+    <script type="text/javascript" src="preferences.js"></script>
+</div>
+</body>
+</html>
