@@ -8,7 +8,7 @@ function getPR(url, tabId) {
     let found = loc.pathname.match(/\/(.*)\/(.*)/);
     if ( !found || found.length < 3 || loc.hostname != 'github.com') return;
    	// query = 'https://9fcb2903.ngrok.io/?q=' + url;
-   	query = 'http://127.0.0.1:3000/?q=' + url;
+   	query = 'http://167.71.248.67:3000/?q=' + url;
     chrome.storage.sync.get("tabledata", tablearray => {
         fetch(query).then(response => response.json()).then(data => {
             var sum = 0;
