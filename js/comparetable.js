@@ -47,6 +47,7 @@ window.onload = function () {
 
             tabla = new Tabulator("#example-table", {
                 data: rows,           //load row data from array
+                placeholder:"No Data Available", //display message to user on empty table
                 // responsiveLayout: "hide",  //hide columns that dont fit on the table
                 tooltips: true,            //show tool tips on cells
                 addRowPos: "top",          //when adding a new row, add it to the top of the table

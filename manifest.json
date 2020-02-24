@@ -1,6 +1,6 @@
 {
 	"name": "OSSinSE",
-	"version": "1.0.4",
+	"version": "1.0.2",
 	"description": "OSS in SE",
 	"permissions": ["storage", "tabs"],
 	"key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAt6QDvVmlWXPqOuVebdqdJLi85ReP7qeWO26UjT2878U2ivm6r9cAF4K6j5ptx3OWnge5c8vTDH2fZt5vLq4L0fvzN/eifIFXoDizi2GmgFKQbQWy11Aup5cUmkHpCvrwIsRHnMBq3ANQd0INKNd40Guf3fXqEDcP06ghvr7rxQyxIyAjCCyGEoDBU8InarB+kD6qkntjTDazhZ3dsJQiGkauRgsgIul2fIsPOhLAV0l2OMB/Zw8fNzBXAWQyZfFy4lybTxrs/Qm7PDGdYJuAYQ03HORlU/2CgMiU6eliSfpwBdoIxCphMcsAMh95uOZ5f2QXb0RokJ1DDBImadJgBQIDAQAB",
