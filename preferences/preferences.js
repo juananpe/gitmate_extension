@@ -11,7 +11,7 @@ var OSSinSE_Preferences = {
 document.getElementById("savemetrics").onclick = function(){
 	console.log('clicked')
 	// console.log(OSSinSE_Preferences.table);
-	chrome.storage.sync.set({"tabledata": OSSinSE_Preferences.table.getData()});
+	chrome.storage.local.set({"tabledata": OSSinSE_Preferences.table.getData()});
 }
 
 window.addEventListener("load", OSSinSE_Preferences.init, false);

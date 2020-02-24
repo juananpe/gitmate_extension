@@ -25,7 +25,7 @@ function drawURL(obj){
 }
 
 
-chrome.storage.sync.get(url, function(jsonData) {
+chrome.storage.local.get(url, function(jsonData) {
     let data = jsonData[url];
 
     $(document).ready( function() {
@@ -49,7 +49,7 @@ chrome.storage.sync.get(url, function(jsonData) {
 });
 
 let readURLs = function() {
-	chrome.storage.sync.get("storedurls", function (jsonURLs) {
+	chrome.storage.local.get("storedurls", function (jsonURLs) {
 		// storedURLs = JSON.parse(jsonURLs);
 		storedURLs = jsonURLs.storedurls;
 		storedURLs.urls.forEach( e => {
@@ -123,7 +123,7 @@ let readURLs = function() {
 
 					drawURL(newurl);
 					storedURLs['urls'].push(newurl);
-					chrome.storage.sync.set({"storedurls": storedURLs });
+					chrome.storage.local.set({"storedurls": storedURLs });
 
 				})
 

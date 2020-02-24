@@ -18,13 +18,13 @@ window.onload = function () {
     let id = 0;
 
 
-    chrome.storage.sync.get("storedurls", storedurls => {
+    chrome.storage.local.get("storedurls", storedurls => {
         storedURLs = storedurls.storedurls;
 
         storedURLs.urls.forEach(e => {
             let project = "https://github.com/" + e.owner;
             projects.push(project);
-            chrome.storage.sync.get(project, result => {
+            chrome.storage.local.get(project, result => {
                 obj = {};
                 keys.forEach( key => {
                     // FIXME: this is a dirty hack, avoid this conditional if

@@ -12,7 +12,7 @@ window.onload = function () {
 
     let tabla;
 
-    chrome.storage.sync.get("tabledata", tablearray => {
+    chrome.storage.local.get("tabledata", tablearray => {
 
         tabla = new Tabulator("#example-table", {
             data:   tablearray.tabledata,           //load row data from array

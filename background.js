@@ -8,8 +8,8 @@ function getPR(url, tabId) {
     let found = loc.pathname.match(/\/(.*)\/(.*)/);
     if ( !found || found.length < 3 || loc.hostname != 'github.com') return;
    	// query = 'https://9fcb2903.ngrok.io/?q=' + url;
-   	query = 'http://127.0.0.1:3000/?q=' + url;
-    chrome.storage.sync.get("tabledata", tablearray => {
+   	query = 'http://167.71.248.67:3000/?q=' + url;
+    chrome.storage.local.get("tabledata", tablearray => {
         fetch(query).then(response => response.json()).then(data => {
             var sum = 0;
             tablearray.tabledata.forEach((c, idx) => {
@@ -32,7 +32,7 @@ function getPR(url, tabId) {
             });
 
             data.suitability = sum>10?10:sum; // cap the suitability value
-            chrome.storage.sync.set({[url]: data}, function () {
+            chrome.storage.local.set({[url]: data}, function () {
                 // console.log("Set value:" + url + ':' + value);
             });
 
@@ -67,7 +67,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo) {
     //     chrome.tabs.get(tabId, function (tab) {
     //         let url = tab.url;
     //         // console.log(url);
-    //         chrome.storage.sync.get(url, function(result) {
+    //         chrome.storage.local.get(url, function(result) {
     //             // console.log("result:");
     //             // console.log(result);
     //             if (typeof result[url] !== 'undefined' && result[url] !== null) {
@@ -97,9 +97,9 @@ chrome.runtime.onInstalled.addListener(function() {
         {id: 11, name: "pullRequests", A: "v>200", B: "v>100", C: "v>50", D: "v>25", W: "1"},
     ];
 
-    chrome.storage.sync.set({"tabledata": tabledata});
+    chrome.storage.local.set({"tabledata": tabledata});
 
-    chrome.storage.sync.set({"storedurls": {"urls": []} });
+    chrome.storage.local.set({"storedurls": {"urls": []} });
 
 
   });
