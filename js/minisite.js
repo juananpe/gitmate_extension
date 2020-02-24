@@ -12,6 +12,9 @@ function draw(criteria){
 		  "<div class='label'>(weight:" + criteria.weight  + ")</div>";
 }
 
+
+// Draw URL of the passed obj in the comparison sidebar
+// It's a list of items stored in chrome.storage
 function drawURL(obj){
 	let element = document.querySelector("#tools > ul")
 	let li = document.createElement("li");
@@ -56,7 +59,7 @@ let readURLs = function() {
 			drawURL(e);
 		})
 	})
-}
+};
 
 			$(document).ready(function(){
 				var docked = 0;

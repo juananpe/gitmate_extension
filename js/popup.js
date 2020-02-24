@@ -1,31 +1,52 @@
+const getGitMateData = (url) => {
+    return new Promise((resolve, reject) => {
 
-function dispChromeSiteInfo(url, owner_name) {
-  document.write( '<iframe name="minisiteinfo" ' + 
-          'src="minisite.html?url='+ url +'&owner=' + owner_name+ '" ' +
-                  'style="padding:0px; overflow:hidden;" '+
-          'width="400px" ' +
-          'height="700px" ' +
-          'marginwidth="5px" ' +
-          'marginheight="5px" ' +
-          'frameborder="0" ' +
-          'scrolling="no" ' +
-          '></iframe>' ); 
+        chrome.storage.local.get(url, function (jsonData) {
+            // after obtaining storage data, index it using the current url
+            jsonData[url].project = url.replace("https://github.com/", "");
+            resolve(jsonData[url]);
+        });
+
+    })
 };
 
 
-function onLoad() {
-    chrome.tabs.getSelected(null, function(tab) {
-     var url = tab.url;
 
-     var loc = new URL(url);
-     let found = loc.pathname.match(/\/(.*)\/(.*)/);
-     if ( !found || found.length < 3 || loc.hostname != 'github.com') return;
+const getCurrentTab = (...args) => {
+    return new Promise((resolve, reject) => {
+        chrome.tabs.query({
+            active: true,
+            lastFocusedWindow: true
+        }, function (tabs) {
+            const url = tabs[0].url;
+            const loc = new URL(url);
+            let found = loc.pathname.match(/\/(.*)\/(.*)/);
+            if (!found || found.length < 3 || loc.hostname != 'github.com') return reject("No github url");
 
-    let foo, owner, name;
-    [foo, owner, name] = loc.pathname.split("/");
+            let foo, owner, name;
+            [foo, owner, name] = loc.pathname.split("/");
+            resolve( [url, owner, name] );
 
-      dispChromeSiteInfo( url,owner + "/" + name);
+        });
+    })
+};
+
+
+function init() {
+    const link = document.getElementById('old');
+    const current = document.getElementById('current');
+
+
+    getCurrentTab().then(url => {
+
+        current.innerHTML = url[0];
+        link.href = `minisite_old.html?url=${url[0]}&owner=${url[1]}/${url[2]}`;
+
+    }).catch( err => {
+        console.log(err);
     });
-};
 
-$(window).load(onLoad);
+}
+
+window.onload = init;
+

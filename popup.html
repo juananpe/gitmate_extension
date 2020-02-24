@@ -1,10 +1,27 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!doctype html>
 <html>
-  <head>
-    <script type="text/javascript" src="/js/3rd/jquery.min.js"></script>
-    <script type="text/javascript" src="/js/popup.js"></script>
-    <title>OSS in SE : info panel</title>
-  </head>
-  <body style="overflow:hidden;">
-  </body>
+<head>
+  <title>Site Overview</title>
+
+  <link rel="stylesheet" type="text/css" href="./css/Chart.min.css">
+
+  <script src="./js/popup.js"></script>
+  <script src="./js/3rd/moment.min.js"></script>
+  <script src="./js/3rd/Chart.min.js"></script>
+  <script src="./js/radar.js"></script>
+
+
+
+</head>
+<body class="chrome" style="overflow:hidden;">
+
+<div id="sites">
+    <div id="current"></div>
+</div>
+<a href="" id="save"><img src="img/save.png" border="0" width="50" height="50"></a>
+
+<canvas id="chartjs-3" class="chartjs" width="1338" height="668"></canvas>
+
+<a href="" id="old">Old</a>
+</body>
 </html>
