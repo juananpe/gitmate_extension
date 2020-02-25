@@ -78,12 +78,41 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const add = document.getElementById('add');
         add.onclick = function () {
+            add._tippy.show();
+            setTimeout(function() {
+                add._tippy.hide();
+            }, 1000);
+
+
             chrome.storage.local.set({"storedurls": storedURLs});
         };
 
+        tippy('#add', {
+            content: 'Added!',
+            trigger: 'manual',
+            hideOnClick: false,
+            animateFill: false,
+            arrow: false,
+            animation: 'shift-away',
+        });
+
+        tippy('#remove', {
+            content: 'Removed!',
+            trigger: 'manual',
+            hideOnClick: false,
+            animateFill: false,
+            arrow: false,
+            animation: 'shift-away',
+        });
+
+
         const remove = document.getElementById('remove');
         remove.onclick = function () {
-            console.log(url);
+            remove._tippy.show();
+            setTimeout(function() {
+                remove._tippy.hide();
+            }, 1000);
+
             storedURLs = storedURLs.filter(e => e !== url);
             chrome.storage.local.set({"storedurls": storedURLs});
             console.log(storedURLs);
