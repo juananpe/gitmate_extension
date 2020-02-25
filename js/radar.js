@@ -1,9 +1,38 @@
+let storedURLs = [];
+
 function showChart(data, project) {
 
-    const labels = Object.keys(data).filter(e => e !== 'suitability');
-    const values = Object.values(data).filter(elem => !isNaN(elem.value)).map(e => e.value*100);
+    const labels = Object.keys(data[0]).filter(e => e !== 'suitability' && e !== 'project');
 
-    console.log(values);
+    console.log("Labels " + labels);
+
+    let datasets = [];
+
+    const backgroundColors = ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)'];
+    const borderColors = ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)'];
+    const pointBackgroundColors = ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgba(255, 206, 86)', 'rgba(75, 192, 192)'];
+    const pointHoverBorderColors = ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgba(255, 206, 86)', 'rgba(75, 192, 192)'];
+
+
+    data.forEach((dataset, idx) => {
+        const values = Object.values(dataset).filter(elem => !isNaN(elem.value)).map(e => e.value * 100);
+        const project = dataset.project;
+        datasets.push(
+            {
+                "label": project,
+                "data": values,
+                "fill": true,
+                "backgroundColor": backgroundColors[idx],
+                "borderColor": borderColors[idx],
+                "pointBackgroundColor": pointBackgroundColors[idx],
+                "pointBorderColor": "#fff",
+                "pointHoverBackgroundColor": "#fff",
+                "pointHoverBorderColor": pointHoverBorderColors[idx]
+            }
+        );
+    });
+
+    console.log("Datasets " + JSON.stringify(datasets));
 
 
 // Disable automatic style injection
@@ -18,20 +47,7 @@ function showChart(data, project) {
                     "labels":
                     labels,
                     "datasets":
-                        [
-                            {
-                                "label": project,
-                                "data": values,
-                                "fill": true,
-                                "backgroundColor": "rgba(255, 99, 132, 0.2)",
-                                "borderColor": "rgb(255, 99, 132)",
-                                "pointBackgroundColor": "rgb(255, 99, 132)",
-                                "pointBorderColor": "#fff",
-                                "pointHoverBackgroundColor": "#fff",
-                                "pointHoverBorderColor": "rgb(255, 99, 132)"
-                            },
-
-                        ]
+                    datasets
                 },
             "options":
                 {
@@ -52,7 +68,6 @@ function showChart(data, project) {
 
 }
 
-
 document.addEventListener('DOMContentLoaded', function () {
 
     getCurrentTab().then(urldata => {
@@ -61,46 +76,33 @@ document.addEventListener('DOMContentLoaded', function () {
         const owner = urldata[1];
         const name = urldata[2];
 
+        const add = document.getElementById('add');
+        add.onclick = function () {
+            chrome.storage.local.set({"storedurls": storedURLs});
+        };
+
+        const remove = document.getElementById('remove');
+        remove.onclick = function () {
+            console.log(url);
+            storedURLs = storedURLs.filter(e => e !== url);
+            chrome.storage.local.set({"storedurls": storedURLs});
+            console.log(storedURLs);
+        };
+
         chrome.storage.local.get("storedurls", function (jsonURLs) {
             storedURLs = jsonURLs.storedurls;
             storedURLs.push(url);
 
-
-            Promise.all ( storedURLs.map( u => {return getGitMateData(u) }) ).then( values => {
-
-
-                // TODO: meter getMitateData dentro de este Promise.all
-                console.log(values);
+            Promise.all(storedURLs.map(u => {
+                return getGitMateData(u)
+            })).then(values => {
+                    console.log(values);
+                    showChart(values, `${owner}/${name}`);
 
                 }
             );
 
-
-            getGitMateData(url).then( data => {
-                showChart(data, `${owner}/${name}`);
-            });
-
-
-
         });
-
-
-        const save = document.getElementById('save');
-        save.onclick = function() {
-            chrome.storage.local.set({"storedurls": storedURLs });
-        };
-
-
-
-        // chrome.storage.local.get(url, function (jsonData) {
-        //
-        //     // after obtaining storage data, index it using the current url
-        //     let data = jsonData[url];
-        //
-        //     showChart(data, `${owner}/${name}`);
-        //
-        // });
-
     });
 });
 
