@@ -49,7 +49,11 @@ function setupChart(gitmateData) {
                             "min": 0,
                             "max": 100
                         }
-                    }
+                    },
+                    "legend":
+                        {
+                            "display": false,
+                        }
                 }
         });
 
