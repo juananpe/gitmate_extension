@@ -81,6 +81,27 @@ function addToChart(data) {
     });
 }
 
+
+function showRelated(reference){
+    // http://www.yasiv.com/github/#/costars?q=edx%2Fedx-platform
+    const url = reference.getAttribute('url');
+
+    let slices, owner, name;
+    slices = url.split("/");
+    owner  = slices[3];
+    name = slices[4];
+
+    // 'src="minisite.html?url='+ url +'&owner=' + owner_name+ '" ' +
+
+
+    return `<iframe name="related" 
+        src="http://www.yasiv.com/github/#/costars?q=${owner}/${name}" 
+        style="padding:0px; overflow:hidden;" 
+        width="800px" 
+        height="800px"
+        ></iframe>`;
+}
+
 function setupButtons() {
     tippy('[data-tippy-content]', {
         trigger: 'manual',
@@ -88,6 +109,16 @@ function setupButtons() {
         animateFill: false,
         arrow: false,
         animation: 'shift-away',
+    });
+
+    tippy('.related', {
+        content: showRelated,
+        allowHTML: true,
+        trigger: 'manual',
+        hideOnClick: false,
+        animateFill: false,
+        arrow: false,
+        interactive: true,
     });
 
     [0, 1, 2, 3].forEach(sitenum => {
@@ -124,6 +155,17 @@ function setupButtons() {
 
             };
         }
+        const related = document.getElementById(`related${sitenum}`);
+        if (related != undefined) {
+            related.onclick = function(e){
+                related._tippy.show();
+                // setTimeout(function () {
+                //     related._tippy.hide();
+                // }, 1000);
+
+            }
+        }
+
 
     });
 }
@@ -190,15 +232,22 @@ function addSite(url) {
     const sites = document.getElementById('sites');
     const site = `<div class"site" style="display: inline-block; margin: 4px">
         ${url}<br>
+        
         <svg data-tippy-content="Added!" fill="none" height="24" id="add${sitesNum}" url="${url}" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 9V12M12 12V15M12 12H15M12 12H9M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
+          <path d="M12 9V12M12 12V15M12 12H15M12 12H9M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
     stroke="#4A5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
+        
         <svg data-tippy-content="Removed!" fill="none" height="24" id="remove${sitesNum}" url="${url}" viewBox="0 0 24 24" width="24"
     xmlns="http://www.w3.org/2000/svg">
-        <path d="M15 12H9M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
+         <path d="M15 12H9M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
     stroke="#4A5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
+        
+        <svg class="related" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" id="related${sitesNum}" url="${url}">
+         <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/>
+        </svg>
+        
         </div>`;
     sitesNum++;
     sites.appendChild(parseHTML(site));
@@ -213,7 +262,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const link = document.getElementById('old');
 
         addSite(url);
-        link.href = `minisite_old.html?url=${url[0]}&owner=${url[1]}/${url[2]}`;
+        link.href = `minisite_old.html?url=${urldata[0]}&owner=${urldata[1]}/${urldata[2]}`;
 
         getGitMateData(url).then(gitmateData => {
                 setupChart(gitmateData);
