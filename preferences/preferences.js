@@ -1,4 +1,4 @@
-var OSSinSE_Preferences = {
+var GitMate_Preferences = {
 	pane: {},
 	content: {},
 	visiblePaneName: null,
@@ -10,8 +10,8 @@ var OSSinSE_Preferences = {
 
 document.getElementById("savemetrics").onclick = function(){
 	console.log('clicked')
-	// console.log(OSSinSE_Preferences.table);
-	chrome.storage.local.set({"tabledata": OSSinSE_Preferences.table.getData()});
+	// console.log(GitMate_Preferences.table);
+	chrome.storage.local.set({"tabledata": GitMate_Preferences.table.getData()});
 }
 
-window.addEventListener("load", OSSinSE_Preferences.init, false);
+window.addEventListener("load", GitMate_Preferences.init, false);

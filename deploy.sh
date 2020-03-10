@@ -15,5 +15,5 @@ sed -e 's/'$CURRENT_VERSION'/'$NEW_VERSION'/g' -i .bak $MANIFEST_FILE
 
 sed -e 's/127.0.0.1/167.71.248.67/g' -i .bak background.js
 # sed -e 's/127.0.0.1/167.71.248.67/g' -i .bak js/popup.js
-zip -9 -r ../ossinse.zip *
+zip -9 -r ../gitmate.zip *
 cd ..

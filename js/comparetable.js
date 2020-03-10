@@ -73,7 +73,7 @@ window.onload = function () {
                     {title: "workForce", field: "workForce", width: 130, editor: "input"}
         ],
             });
-            // OSSinSE_Preferences.table = tabla;
+            // GitMate_Preferences.table = tabla;
         }, 250);
 
     });
