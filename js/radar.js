@@ -1,3 +1,5 @@
+import {createTable} from "./related.js";
+
 let storedURLs = [];
 let chart = null;
 const backgroundColors = ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)'];
@@ -91,15 +93,9 @@ function showRelated(reference) {
     owner = slices[3];
     name = slices[4];
 
-    // 'src="minisite.html?url='+ url +'&owner=' + owner_name+ '" ' +
+    const project =  `${owner}/${name}`;
+    return createTable(project);
 
-
-    return `<iframe name="related" 
-        src="http://www.yasiv.com/github/#/costars?q=${owner}/${name}" 
-        style="padding:0px; overflow:hidden;" 
-        width="800px" 
-        height="800px"
-        ></iframe>`;
 }
 
 function setupButtons() {
@@ -111,11 +107,12 @@ function setupButtons() {
         animation: 'shift-away',
     });
 
+
     tippy('.related', {
-        content: showRelated,
+        content: 'showRelated',
         allowHTML: true,
         trigger: 'manual',
-        hideOnClick: false,
+        hideOnClick: true,
         animateFill: false,
         arrow: false,
         interactive: true,
@@ -158,7 +155,10 @@ function setupButtons() {
         const related = document.getElementById(`related${sitenum}`);
         if (related != undefined) {
             related.onclick = function (e) {
-                related._tippy.show();
+                showRelated(related).then( table => {
+                    console.log(table);
+                });
+                // related._tippy.show();
                 // setTimeout(function () {
                 //     related._tippy.hide();
                 // }, 1000);
