@@ -111,17 +111,6 @@ function setupButtons() {
         animation: 'shift-away',
     });
 
-
-    // tippy('.related', {
-    //     content: 'showRelated',
-    //     allowHTML: true,
-    //     trigger: 'manual',
-    //     hideOnClick: true,
-    //     animateFill: false,
-    //     arrow: false,
-    //     interactive: true,
-    // });
-
     const relatedDiv = document.getElementById("related");
 
     [0, 1, 2, 3].forEach(sitenum => {
@@ -164,11 +153,6 @@ function setupButtons() {
                 showRelated(related).then( table => {
                     relatedDiv.innerHTML = table;
                 });
-                // related._tippy.show();
-                // setTimeout(function () {
-                //     related._tippy.hide();
-                // }, 1000);
-
             }
         }
 

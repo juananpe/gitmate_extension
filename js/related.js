@@ -1,5 +1,3 @@
-// const params = new URLSearchParams(window.location.search);
-// const project = params.get("q");
 
 function createTable(project) {
 
@@ -28,12 +26,6 @@ function createTable(project) {
     <th># stars</th>
 `;
 
-// const template = document.createElement('template');
-// template.innerHTML = bodyTemplate;
-// document.body.appendChild(template);
-
-
-// const table = document.getElementById('related');
     return fetch(`http://s3.amazonaws.com/github_yasiv/out/${project}.json`).then(resp => resp.json()).then(resp => {
         resp.forEach(
             relatedProject => {
@@ -41,12 +33,6 @@ function createTable(project) {
                 const data = `
                     <tr><td><a href="https://github.com/${relatedProject.n}" target="_blank">${relatedProject.n}</a></td><td>${relatedProject.d}</td><td>${relatedProject.r}</td><td>${relatedProject.w}</td></tr>`;
                 bodyTemplate += data;
-
-                // const template = document.createElement('template');
-                // template.innerHTML = data;
-                // table.appendChild(template.content);
-
-
             }
         );
         bodyTemplate += `
