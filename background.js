@@ -84,17 +84,17 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo) {
 chrome.runtime.onInstalled.addListener(function() {
 
     let tabledata = [
-        {id: 1, name: "popularity", A: "v>=500", B: "v>=400", C: "v>=300", D: "v>=200", W: "1"},
-        {id: 2, name: "workForce", A: "v>=10 ", B: "v>8", C: "v>6", D: "v>4", W: "1"},
-        {id: 3, name: "recentActivity", A: "v<=2", B: "v<=7", C: "v>7 and v<=14", D: "v<= 21", W: "1"},
-        {id: 4, name: "continuousActivity", A: "v>40", B: "v>30", C: "v>20", D: "v>10", W: "1"},
-        {id: 5, name: "forkDegree", A: "v>50", B: "v>40", C: "v>30", D: "v>20", W: "1"},
-        {id: 6, name: "beginnerFriendly", A: "v>10", B: "v>8", C: "v>6", D: "v>4", W: "1"},
-        {id: 7, name: "docWiki", A: "v>10", B: "v>7", C: "v>5", D: "v>=3", W: "1"},
-        {id: 7, name: "docWeb", A: "v", B: "v!=v", C: "v!=v", D: "v!=v", W: "1"},
-        {id: 9, name: "contributionOpportunities", A: "v>200", B: "v>100", C: "v>75", D: "v>50", W: "1"},
-        {id: 10, name: "closingFactor", A: "v>0.25", B: "v>0.20", C: "v>0.15", D: "v>0.10", W: "1"},
-        {id: 11, name: "pullRequests", A: "v>200", B: "v>100", C: "v>50", D: "v>25", W: "1"},
+        {id: 1, name: "popularity", A: "v>=500", B: "v>=400", C: "v>=300", D: "v>=200", W: "1", group: "group1"},
+        {id: 2, name: "workForce", A: "v>=10 ", B: "v>8", C: "v>6", D: "v>4", W: "1", group: "group1"},
+        {id: 3, name: "recentActivity", A: "v<=2", B: "v<=7", C: "v>7 and v<=14", D: "v<= 21", W: "1", group: "group1"},
+        {id: 4, name: "continuousActivity", A: "v>40", B: "v>30", C: "v>20", D: "v>10", W: "1", group: "group2"},
+        {id: 5, name: "forkDegree", A: "v>50", B: "v>40", C: "v>30", D: "v>20", W: "1", group: "group2"},
+        {id: 6, name: "beginnerFriendly", A: "v>10", B: "v>8", C: "v>6", D: "v>4", W: "1", group: "group2"},
+        {id: 7, name: "docWiki", A: "v>10", B: "v>7", C: "v>5", D: "v>=3", W: "1", group: "group2"},
+        {id: 7, name: "docWeb", A: "v", B: "v!=v", C: "v!=v", D: "v!=v", W: "1", group: "group3"},
+        {id: 9, name: "contributionOpportunities", A: "v>200", B: "v>100", C: "v>75", D: "v>50", W: "1", group: "group3"},
+        {id: 10, name: "closingFactor", A: "v>0.25", B: "v>0.20", C: "v>0.15", D: "v>0.10", W: "1", group: "group3"},
+        {id: 11, name: "pullRequests", A: "v>200", B: "v>100", C: "v>50", D: "v>25", W: "1", group: "group3"},
     ];
 
     chrome.storage.local.set({"tabledata": tabledata});

@@ -14,7 +14,7 @@ window.onload = function () {
 
     chrome.storage.local.get("tabledata", tablearray => {
 
-        tabla = new Tabulator("#example-table", {
+        tabla = new Tabulator("#metrics-table", {
             data:   tablearray.tabledata,           //load row data from array
 
             responsiveLayout: "hide",  //hide columns that dont fit on the table
@@ -26,14 +26,15 @@ window.onload = function () {
             initialSort: [             //set the initial sort order of the data
                 {column: "name", dir: "asc"},
             ],
+            groupBy: "group",
             columns: [                 //define the table columns
                 {title: "Name", field: "name"},
 
-                {title: "A", field: "A", width: 130, editor: "input"},
-                {title: "B", field: "B", width: 130, editor: "input"},
-                {title: "C", field: "C", width: 130, editor: "input"},
-                {title: "D", field: "D", width: 130, editor: "input"},
-                {title: "Weight", field: "W", width: 130, editor: "input"},
+                {title: "Excellent (1p)", field: "A", width: 140, editor: "input"},
+                {title: "Very good (0.75)", field: "B", width: 160, editor: "input"},
+                {title: "Good (0.5)", field: "C", width: 140, editor: "input"},
+                {title: "Fair (0.25)", field: "D", width: 140, editor: "input"},
+                {title: "Weight", field: "W", width: 100, editor: "input"},
             ],
         });
         GitMate_Preferences.table = tabla;
