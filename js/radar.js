@@ -97,7 +97,7 @@ function showRelated(reference) {
     owner = slices[3];
     name = slices[4];
 
-    const project =  `${owner}/${name}`;
+    const project = `${owner}/${name}`;
     return createTable(project);
 
 }
@@ -113,8 +113,24 @@ function setupButtons() {
 
     const relatedDiv = document.getElementById("related");
 
+    function setVisibility(add, remove, url) {
+        add.style.visibility = storedURLs.includes( url )?'hidden':'visible';
+        add.style.display = storedURLs.includes( url )?'none':'inline';
+
+        remove.style.visibility = storedURLs.includes( url )?'visible':'hidden';
+        remove.style.display = storedURLs.includes( url )?'inline':'none';
+    }
+
+
     [0, 1, 2, 3].forEach(sitenum => {
         const add = document.getElementById(`add${sitenum}`);
+        const remove = document.getElementById(`remove${sitenum}`);
+
+        if (!add) return;
+
+        const url = add.getAttribute("url");
+
+
         if (add != undefined) {
             add.onclick = function () {
                 add._tippy.show();
@@ -122,35 +138,37 @@ function setupButtons() {
                     add._tippy.hide();
                 }, 1000);
 
-                let url = add.getAttribute("url");
                 console.log("On add: " + url);
                 storedURLs.push(url);
+                setVisibility(add, remove, url);
 
                 chrome.storage.local.set({"storedurls": storedURLs});
             };
         }
 
-        const remove = document.getElementById(`remove${sitenum}`);
         if (remove != undefined) {
             remove.onclick = function (e) {
-
                 remove._tippy.show();
                 setTimeout(function () {
                     remove._tippy.hide();
                     e.target.parentElement.style.display = "none"
                 }, 1000);
 
-                let url = remove.getAttribute("url");
                 console.log("On remove: " + url);
                 storedURLs = storedURLs.filter(e => e !== url);
+                setVisibility(add, remove, url);
+
                 chrome.storage.local.set({"storedurls": storedURLs});
 
             };
         }
+
+        setVisibility(add, remove, url);
+
         const related = document.getElementById(`related${sitenum}`);
         if (related != undefined) {
             related.onclick = function (e) {
-                showRelated(related).then( table => {
+                showRelated(related).then(table => {
                     relatedDiv.innerHTML = table;
                 });
             }
@@ -160,11 +178,12 @@ function setupButtons() {
     });
 }
 
-function addStored() {
+function addStored(actualUrl) {
     chrome.storage.local.get("storedurls", function (jsonURLs) {
         storedURLs = jsonURLs.storedurls;
 
         storedURLs.forEach(url => {
+            if (url!==actualUrl)
             addSite(url);
         });
 
@@ -203,7 +222,7 @@ const getGitMateData = (url) => {
 
         chrome.storage.local.get(url, function (jsonData) {
             // use cached data it is less than 7 days old
-            if (Object.keys(jsonData).length === 0 || days_since(jsonData[url].cached) >= 7 ){
+            if (Object.keys(jsonData).length === 0 || days_since(jsonData[url].cached) >= 7) {
                 fetch(query).then(response => response.json()).then(data => {
                     chrome.storage.local.set({[url]: data}, function () {
                         // after obtaining storage data, index it using the current url
@@ -254,13 +273,13 @@ function addSite(url) {
         
         <svg data-tippy-content="Added!" fill="none" height="24" id="add${sitesNum}" url="${url}" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
           <path d="M12 9V12M12 12V15M12 12H15M12 12H9M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
-    stroke="#4A5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    stroke="#4A5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"  fill="${borderColors[sitesNum]}" />
         </svg>
         
         <svg data-tippy-content="Removed!" fill="none" height="24" id="remove${sitesNum}" url="${url}" viewBox="0 0 24 24" width="24"
     xmlns="http://www.w3.org/2000/svg">
          <path d="M15 12H9M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
-    stroke="#4A5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    stroke="#4A5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="${borderColors[sitesNum]}"/>
         </svg>
         
         <svg class="related" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" id="related${sitesNum}" url="${url}">
@@ -285,7 +304,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         getGitMateData(url).then(gitmateData => {
                 setupChart(gitmateData);
-                addStored();
+                addStored(url);
             }
         );
 
