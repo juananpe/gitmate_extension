@@ -6,12 +6,11 @@ function createTable(project) {
 // create Table
     let bodyTemplate = `
 <style>
-    body {
-        background-color: aliceblue;
-    }
+    
     table {
         border-collapse: collapse;
-        width: 100%;
+        background-color: aliceblue;
+        width: 88%;
     }
 
     th, td {
@@ -25,8 +24,8 @@ function createTable(project) {
     <tr>
     <th>Project</th>
     <th>Description</th>
-    <th># stars</th>
     <th>GitMate Index</th>
+    <th># stars</th>
 `;
 
 // const template = document.createElement('template');
@@ -40,7 +39,7 @@ function createTable(project) {
             relatedProject => {
                 // Append new row with project data to the related table
                 const data = `
-                    <tr><td>${relatedProject.n}</td><td>${relatedProject.d}</td><td>${relatedProject.r}</td><td>${relatedProject.w}</td></tr>`;
+                    <tr><td><a href="https://github.com/${relatedProject.n}" target="_blank">${relatedProject.n}</a></td><td>${relatedProject.d}</td><td>${relatedProject.r}</td><td>${relatedProject.w}</td></tr>`;
                 bodyTemplate += data;
 
                 // const template = document.createElement('template');
@@ -53,6 +52,7 @@ function createTable(project) {
         bodyTemplate += `
                 </tr> </table>`;
 
+        return bodyTemplate;
     });
 
 }

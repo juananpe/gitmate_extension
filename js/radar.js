@@ -105,22 +105,24 @@ function showRelated(reference) {
 function setupButtons() {
     tippy('[data-tippy-content]', {
         trigger: 'manual',
-        hideOnClick: false,
+        // hideOnClick: false,
         animateFill: false,
         arrow: false,
         animation: 'shift-away',
     });
 
 
-    tippy('.related', {
-        content: 'showRelated',
-        allowHTML: true,
-        trigger: 'manual',
-        hideOnClick: true,
-        animateFill: false,
-        arrow: false,
-        interactive: true,
-    });
+    // tippy('.related', {
+    //     content: 'showRelated',
+    //     allowHTML: true,
+    //     trigger: 'manual',
+    //     hideOnClick: true,
+    //     animateFill: false,
+    //     arrow: false,
+    //     interactive: true,
+    // });
+
+    const relatedDiv = document.getElementById("related");
 
     [0, 1, 2, 3].forEach(sitenum => {
         const add = document.getElementById(`add${sitenum}`);
@@ -160,7 +162,7 @@ function setupButtons() {
         if (related != undefined) {
             related.onclick = function (e) {
                 showRelated(related).then( table => {
-                    console.log(table);
+                    relatedDiv.innerHTML = table;
                 });
                 // related._tippy.show();
                 // setTimeout(function () {
