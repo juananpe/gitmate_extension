@@ -36,7 +36,7 @@ window.onload = function () {
                 {title: "Weight", field: "W", width: 130, editor: "input"},
             ],
         });
-        OSSinSE_Preferences.table = tabla;
+        GitMate_Preferences.table = tabla;
     });
 
 

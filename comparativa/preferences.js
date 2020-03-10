@@ -1,4 +1,4 @@
-var OSSinSE_Preferences = {
+var GitMate_Preferences = {
 	pane: {},
 	content: {},
 	visiblePaneName: null,
@@ -8,4 +8,4 @@ var OSSinSE_Preferences = {
 
 	};
 
-window.addEventListener("load", OSSinSE_Preferences.init, false);
+window.addEventListener("load", GitMate_Preferences.init, false);

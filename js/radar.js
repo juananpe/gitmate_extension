@@ -82,13 +82,13 @@ function addToChart(data) {
 }
 
 
-function showRelated(reference){
+function showRelated(reference) {
     // http://www.yasiv.com/github/#/costars?q=edx%2Fedx-platform
     const url = reference.getAttribute('url');
 
     let slices, owner, name;
     slices = url.split("/");
-    owner  = slices[3];
+    owner = slices[3];
     name = slices[4];
 
     // 'src="minisite.html?url='+ url +'&owner=' + owner_name+ '" ' +
@@ -157,7 +157,7 @@ function setupButtons() {
         }
         const related = document.getElementById(`related${sitenum}`);
         if (related != undefined) {
-            related.onclick = function(e){
+            related.onclick = function (e) {
                 related._tippy.show();
                 // setTimeout(function () {
                 //     related._tippy.hide();
@@ -191,12 +191,41 @@ function addStored() {
 }
 
 const getGitMateData = (url) => {
+
+    function days_since(cachedDate) {
+
+        const today = new Date();
+
+        // The number of milliseconds in one day
+        const ONE_DAY = 1000 * 60 * 60 * 24;
+
+        // Calculate the difference in milliseconds
+        const differenceMs = Math.abs(today - cachedDate);
+
+        // Convert back to days and return
+        return Math.round(differenceMs / ONE_DAY);
+
+    }
+
     return new Promise((resolve, reject) => {
 
+        const query = 'http://167.71.248.67:3000/?q=' + url;
+
         chrome.storage.local.get(url, function (jsonData) {
-            // after obtaining storage data, index it using the current url
-            jsonData[url].project = url.replace("https://github.com/", "");
-            resolve(jsonData[url]);
+            // use cached data it is less than 7 days old
+            if (Object.keys(jsonData).length === 0 || days_since(jsonData[url].cached) >= 7 ){
+                fetch(query).then(response => response.json()).then(data => {
+                    chrome.storage.local.set({[url]: data}, function () {
+                        // after obtaining storage data, index it using the current url
+                        jsonData[url].project = url.replace("https://github.com/", "");
+                        jsonData[url].cached = new Date().getTime();
+                        resolve(jsonData[url]);
+                    });
+                }).catch(error => console.log(error.message));
+            } else {
+                jsonData[url].project = url.replace("https://github.com/", "");
+                resolve(jsonData[url]);
+            }
         });
 
     })

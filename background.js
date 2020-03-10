@@ -99,7 +99,7 @@ chrome.runtime.onInstalled.addListener(function() {
 
     chrome.storage.local.set({"tabledata": tabledata});
 
-    chrome.storage.local.set({"storedurls": {"urls": []} });
+    chrome.storage.local.set({"storedurls":  [] });
 
 
   });
