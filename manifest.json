@@ -1,7 +1,7 @@
 {
   "name": "GitMate",
-  "version": "1.0.4",
-  "description": "OSS in SE",
+  "version": "1.0.5",
+  "description": "GitMate: A tool for helping new contributors to choose an Open Source project they can contribute to.",
   "permissions": [
     "storage",
     "tabs"
@@ -13,7 +13,8 @@
   },
   "icons": {
     "16": "img/thermo16x16.png",
-    "48": "img/thermo48x48.png"
+    "48": "img/thermo48x48.png",
+    "128": "img/thermo128x128.png"
   },
   "oauth2": {
     "client_id": "495853776801-iohaio2qq0qprr5jv9k78upd6mmj9ck7.apps.googleusercontent.com",

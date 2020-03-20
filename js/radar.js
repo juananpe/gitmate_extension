@@ -1,6 +1,7 @@
 import {createTable} from "./related.js";
 
 let storedURLs = [];
+
 let chart = null;
 const backgroundColors = ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)'];
 const borderColors = ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)'];
@@ -102,7 +103,7 @@ function showRelated(reference) {
 
 }
 
-function setupButtons() {
+function setupButtons(locked) {
     tippy('[data-tippy-content]', {
         trigger: 'manual',
         // hideOnClick: false,
@@ -114,11 +115,11 @@ function setupButtons() {
     const relatedDiv = document.getElementById("related");
 
     function setVisibility(add, remove, url) {
-        add.style.visibility = storedURLs.includes( url )?'hidden':'visible';
-        add.style.display = storedURLs.includes( url )?'none':'inline';
+        add.style.visibility = storedURLs.includes(url) ? 'hidden' : 'visible';
+        add.style.display = storedURLs.includes(url) ? 'none' : 'inline';
 
-        remove.style.visibility = storedURLs.includes( url )?'visible':'hidden';
-        remove.style.display = storedURLs.includes( url )?'inline':'none';
+        remove.style.visibility = storedURLs.includes(url) ? 'visible' : 'hidden';
+        remove.style.display = storedURLs.includes(url) ? 'inline' : 'none';
     }
 
 
@@ -140,7 +141,7 @@ function setupButtons() {
 
                 console.log("On add: " + url);
                 storedURLs.push(url);
-                setVisibility(add, remove, url);
+                setVisibility(add, remove, storedURLs, url);
 
                 chrome.storage.local.set({"storedurls": storedURLs});
             };
@@ -156,14 +157,14 @@ function setupButtons() {
 
                 console.log("On remove: " + url);
                 storedURLs = storedURLs.filter(e => e !== url);
-                setVisibility(add, remove, url);
+                setVisibility(add, remove, storedURLs, url);
 
                 chrome.storage.local.set({"storedurls": storedURLs});
 
             };
         }
 
-        setVisibility(add, remove, url);
+        setVisibility(add, remove, storedURLs, url);
 
         const related = document.getElementById(`related${sitenum}`);
         if (related != undefined) {
@@ -174,6 +175,30 @@ function setupButtons() {
             }
         }
 
+        const lock = document.getElementById(`lock${sitenum}`);
+        const unlock = document.getElementById(`unlock${sitenum}`);
+
+        if (locked.contains( url)) {
+            lock.style.visibility = 'visible';
+            lock.style.display = 'inline';
+        } else {
+            lock.style.visibility = 'hidden';
+            lock.style.display =  'none';
+        }
+
+        if (lock != undefined) {
+            lock.onclick = function (e) {
+                setVisibility(lock, unlock, locked, url);
+            }
+        }
+
+        if (unlock != undefined) {
+            unlock.onclick = function (e) {
+                locked = [url];
+                chrome.localStorage.setItem('locked', url);
+                setVisibility(lock, unlock, locked, url);
+            }
+        }
 
     });
 }
@@ -183,11 +208,13 @@ function addStored(actualUrl) {
         storedURLs = jsonURLs.storedurls;
 
         storedURLs.forEach(url => {
-            if (url!==actualUrl)
-            addSite(url);
+            if (url !== actualUrl)
+                addSite(url);
         });
 
-        setupButtons();
+        chrome.storage.local.get("locked", function (locked) {
+            setupButtons([locked]);
+        });
 
         Promise.all(storedURLs.map(u => {
             return getGitMateData(u)
@@ -284,6 +311,16 @@ function addSite(url) {
         
         <svg class="related" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" id="related${sitesNum}" url="${url}">
          <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/>
+        </svg>
+        
+        <!-- LOCK -->
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" id="lock${sitesNum}">
+            <path d="M12 15V17M6 21H18C19.1046 21 20 20.1046 20 19V13C20 11.8954 19.1046 11 18 11H6C4.89543 11 4 11.8954 4 13V19C4 20.1046 4.89543 21 6 21ZM16 11V7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7V11H16Z" stroke="#4A5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        
+        <!-- UNLOCK -->
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" id="unlock${sitesNum}">
+            <path d="M8 11V7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7M12 15V17M6 21H18C19.1046 21 20 20.1046 20 19V13C20 11.8954 19.1046 11 18 11H6C4.89543 11 4 11.8954 4 13V19C4 20.1046 4.89543 21 6 21Z" stroke="#4A5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
         
         </div>`;

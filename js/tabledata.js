@@ -26,7 +26,7 @@ window.onload = function () {
             initialSort: [             //set the initial sort order of the data
                 {column: "name", dir: "asc"},
             ],
-            groupBy: "group",
+            // groupBy: "group",
             columns: [                 //define the table columns
                 {title: "Name", field: "name"},
 
