@@ -103,6 +103,11 @@ function showRelated(reference) {
 
 }
 
+function setVisible(what, visible){
+    what.style.visibility = visible?'visible':'hidden';
+    what.style.display = visible?'display':'none';
+}
+
 function setupButtons(locked) {
     tippy('[data-tippy-content]', {
         trigger: 'manual',
@@ -114,12 +119,12 @@ function setupButtons(locked) {
 
     const relatedDiv = document.getElementById("related");
 
-    function setVisibility(add, remove, url) {
-        add.style.visibility = storedURLs.includes(url) ? 'hidden' : 'visible';
-        add.style.display = storedURLs.includes(url) ? 'none' : 'inline';
+    function setVisibility(add, remove, where, url) {
+        add.style.visibility = where.includes(url) ? 'hidden' : 'visible';
+        add.style.display = where.includes(url) ? 'none' : 'inline';
 
-        remove.style.visibility = storedURLs.includes(url) ? 'visible' : 'hidden';
-        remove.style.display = storedURLs.includes(url) ? 'inline' : 'none';
+        remove.style.visibility = where.includes(url) ? 'visible' : 'hidden';
+        remove.style.display = where.includes(url) ? 'inline' : 'none';
     }
 
 
@@ -178,25 +183,30 @@ function setupButtons(locked) {
         const lock = document.getElementById(`lock${sitenum}`);
         const unlock = document.getElementById(`unlock${sitenum}`);
 
-        if (locked.contains( url)) {
-            lock.style.visibility = 'visible';
-            lock.style.display = 'inline';
+        if ( locked.includes(lock.getAttribute('url'))){
+            lock.parentElement.classList.add("locked");
         } else {
-            lock.style.visibility = 'hidden';
-            lock.style.display =  'none';
+            lock.parentElement.classList.remove("locked");
         }
+
+        setVisible(lock, locked.includes(url));
+        setVisible(unlock, !locked.includes(url));
+
 
         if (lock != undefined) {
             lock.onclick = function (e) {
                 setVisibility(lock, unlock, locked, url);
+                lock.parentElement.classList.remove("locked");
+                locked = [];
             }
         }
 
         if (unlock != undefined) {
             unlock.onclick = function (e) {
-                locked = [url];
-                chrome.localStorage.setItem('locked', url);
+                unlock.parentElement.classList.add("locked");
+                chrome.storage.local.set({'locked': url});
                 setVisibility(lock, unlock, locked, url);
+                locked = [url];
             }
         }
 
@@ -213,7 +223,10 @@ function addStored(actualUrl) {
         });
 
         chrome.storage.local.get("locked", function (locked) {
-            setupButtons([locked]);
+            if (Object.keys(locked).length === 0)
+                setupButtons([]);
+            else
+                setupButtons([locked.locked]);
         });
 
         Promise.all(storedURLs.map(u => {
@@ -295,7 +308,7 @@ function parseHTML(html) {
 
 function addSite(url) {
     const sites = document.getElementById('sites');
-    const site = `<div class"site" style="display: inline-block; margin: 4px">
+    const site = `<div class"site" style="display: inline-block; margin: 4px" url="${url}">
         ${url}<br>
         
         <svg data-tippy-content="Added!" fill="none" height="24" id="add${sitesNum}" url="${url}" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
@@ -314,12 +327,12 @@ function addSite(url) {
         </svg>
         
         <!-- LOCK -->
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" id="lock${sitesNum}">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" id="lock${sitesNum}"  url="${url}">
             <path d="M12 15V17M6 21H18C19.1046 21 20 20.1046 20 19V13C20 11.8954 19.1046 11 18 11H6C4.89543 11 4 11.8954 4 13V19C4 20.1046 4.89543 21 6 21ZM16 11V7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7V11H16Z" stroke="#4A5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
         
         <!-- UNLOCK -->
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" id="unlock${sitesNum}">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" id="unlock${sitesNum}"  url="${url}">
             <path d="M8 11V7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7M12 15V17M6 21H18C19.1046 21 20 20.1046 20 19V13C20 11.8954 19.1046 11 18 11H6C4.89543 11 4 11.8954 4 13V19C4 20.1046 4.89543 21 6 21Z" stroke="#4A5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
         
