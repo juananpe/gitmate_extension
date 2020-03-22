@@ -266,6 +266,7 @@ const getGitMateData = (url) => {
                 fetch(query).then(response => response.json()).then(data => {
                     chrome.storage.local.set({[url]: data}, function () {
                         // after obtaining storage data, index it using the current url
+                        jsonData[url] = {};
                         jsonData[url].project = url.replace("https://github.com/", "");
                         jsonData[url].cached = new Date().getTime();
                         resolve(jsonData[url]);
