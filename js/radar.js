@@ -10,6 +10,8 @@ const pointBackgroundColors = ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgba(2
 const pointHoverBorderColors = ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgba(255, 206, 86)', 'rgba(75, 192, 192)'];
 const fill = false;
 let sitesNum = 0;
+const svglock = "M12 15V17M6 21H18C19.1046 21 20 20.1046 20 19V13C20 11.8954 19.1046 11 18 11H6C4.89543 11 4 11.8954 4 13V19C4 20.1046 4.89543 21 6 21ZM16 11V7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7V11H16Z";
+const svgunlock = "M8 11V7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7M12 15V17M6 21H18C19.1046 21 20 20.1046 20 19V13C20 11.8954 19.1046 11 18 11H6C4.89543 11 4 11.8954 4 13V19C4 20.1046 4.89543 21 6 21Z";
 
 function setupChart(gitmateData) {
 
@@ -128,7 +130,7 @@ function setupButtons(locked) {
         remove.style.display = where.includes(url) ? 'inline' : 'none';
     }
 
-
+    // FIXME: this is ugly
     [0, 1, 2, 3].forEach(sitenum => {
         const add = document.getElementById(`add${sitenum}`);
         const remove = document.getElementById(`remove${sitenum}`);
@@ -196,21 +198,18 @@ function setupButtons(locked) {
 
         if (lock != undefined) {
             lock.onclick = function (e) {
-                setVisibility(lock, unlock, locked, url);
-                lock.parentElement.classList.remove("locked");
-                locked = [];
+                if (lock.parentElement.classList.contains("locked")) {
+                    lock.parentElement.classList.remove("locked");
+                    lock.firstElementChild.setAttribute('d', svgunlock);
+                    locked = [];
+                } else {
+                    lock.parentElement.classList.add("locked");
+                    lock.firstElementChild.setAttribute('d', svglock);
+                    locked = [url];
+                }
+                chrome.storage.local.set({'locked': locked[0]});
             }
         }
-
-        if (unlock != undefined) {
-            unlock.onclick = function (e) {
-                unlock.parentElement.classList.add("locked");
-                chrome.storage.local.set({'locked': url});
-                setVisibility(lock, unlock, locked, url);
-                locked = [url];
-            }
-        }
-
     });
 }
 
