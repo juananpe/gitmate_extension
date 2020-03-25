@@ -10,8 +10,12 @@ const pointBackgroundColors = ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgba(2
 const pointHoverBorderColors = ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgba(255, 206, 86)', 'rgba(75, 192, 192)'];
 const fill = false;
 let sitesNum = 0;
+
 const svglock = "M12 15V17M6 21H18C19.1046 21 20 20.1046 20 19V13C20 11.8954 19.1046 11 18 11H6C4.89543 11 4 11.8954 4 13V19C4 20.1046 4.89543 21 6 21ZM16 11V7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7V11H16Z";
 const svgunlock = "M8 11V7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7M12 15V17M6 21H18C19.1046 21 20 20.1046 20 19V13C20 11.8954 19.1046 11 18 11H6C4.89543 11 4 11.8954 4 13V19C4 20.1046 4.89543 21 6 21Z";
+
+const svgadd = "M12 9V12M12 12V15M12 12H15M12 12H9M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
+const svgremove = "M15 12H9M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
 
 function setupChart(gitmateData) {
 
@@ -45,12 +49,20 @@ function setupChart(gitmateData) {
                 },
             "options":
                 {
+                    tooltips: {
+                        enabled: true,
+                        callbacks: {
+                            label: function(tooltipItem, data) {
+                                return data.datasets[tooltipItem.datasetIndex].label + ":" + data.labels[tooltipItem.index] + ' : ' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                            }
+                        }
+                    },
                     "elements":
                         {
                             "line":
                                 {"tension": 0, "borderWidth": 3}
                         },
-                    scale: {
+                    "scale": {
                         "ticks": {
                             "min": 0,
                             "max": 100
@@ -67,12 +79,21 @@ function setupChart(gitmateData) {
 
 
 function addToChart(data) {
-    data.forEach((gitmateData, idx) => {
+    const datasets = chart.data.datasets;
+    const labels = datasets.map( dataset => dataset.label);
 
-        idx += 1;
-        const datasets = chart.data.datasets;
-        const values = Object.values(gitmateData).filter(elem => !isNaN(elem.value)).map(e => e.value * 100);
+    let idx = 1;
+
+    data.forEach(gitmateData => {
+
         const project = gitmateData.project;
+        if (labels.includes(project)){
+            return;
+        }
+
+        const values = Object.values(gitmateData).filter(elem => !isNaN(elem.value)).map(e => e.value * 100);
+
+
         const newdata = {
             "label": project,
             "data": values,
@@ -88,6 +109,8 @@ function addToChart(data) {
             newdata
         );
         chart.update();
+
+        idx++;
     });
 }
 
@@ -106,13 +129,27 @@ function showRelated(reference) {
 
 }
 
-function setVisible(what, visible) {
-    what.style.visibility = visible ? 'visible' : 'hidden';
-    what.style.display = visible ? 'display' : 'none';
+
+function setRemove(url, addremove) {
+    if (!storedURLs.includes(url)) {
+        storedURLs.push(url);
+    }
+    addremove._tippy.setContent("Added!");
+    addremove.firstElementChild.setAttribute('d', svgremove);
+    addremove.setAttribute('action', 'remove');
+    // addremove.setAttribute('data-tippy-content', 'removed!');
+}
+
+function setAdd(url, addremove) {
+    storedURLs = storedURLs.filter(e => e !== url);
+    addremove.firstElementChild.setAttribute('d', svgadd);
+    addremove.setAttribute('action', 'add');
+    addremove._tippy.setContent("Removed!");
+    // addremove.setAttribute('data-tippy-content', 'added!');
 }
 
 function setupButtons(locked) {
-    tippy('[data-tippy-content]', {
+    tippy('.addremove', {
         trigger: 'manual',
         // hideOnClick: false,
         animateFill: false,
@@ -122,57 +159,35 @@ function setupButtons(locked) {
 
     const relatedDiv = document.getElementById("related");
 
-    function setVisibility(add, remove, where, url) {
-        add.style.visibility = where.includes(url) ? 'hidden' : 'visible';
-        add.style.display = where.includes(url) ? 'none' : 'inline';
-
-        remove.style.visibility = where.includes(url) ? 'visible' : 'hidden';
-        remove.style.display = where.includes(url) ? 'inline' : 'none';
-    }
-
     // FIXME: this is ugly
     [0, 1, 2, 3].forEach(sitenum => {
-        const add = document.getElementById(`add${sitenum}`);
-        const remove = document.getElementById(`remove${sitenum}`);
+        const addremove = document.getElementById(`add${sitenum}`);
+        if (!addremove) return;
+        const url = addremove.getAttribute("url");
 
-        if (!add) return;
-
-        const url = add.getAttribute("url");
-
-
-        if (add != undefined) {
-            add.onclick = function () {
-                add._tippy.show();
-                setTimeout(function () {
-                    add._tippy.hide();
-                }, 1000);
-
-                console.log("On add: " + url);
-                storedURLs.push(url);
-                setVisibility(add, remove, storedURLs, url);
-
-                chrome.storage.local.set({"storedurls": storedURLs});
-            };
+        if (addremove.getAttribute('action') === 'add' && storedURLs.includes(url)) {
+            console.log("change to remove");
+            addremove.firstElementChild.setAttribute('d', svgremove);
+            addremove.setAttribute('action', 'remove');
+            addremove._tippy.setContent("Removed!");
         }
 
-        if (remove != undefined) {
-            remove.onclick = function (e) {
-                remove._tippy.show();
-                setTimeout(function () {
-                    remove._tippy.hide();
-                    e.target.parentElement.style.display = "none"
-                }, 1000);
+        // if (addremove != undefined) {
+        addremove.onclick = function () {
+            const action = addremove.getAttribute('action');
+            addremove._tippy.show();
+            setTimeout(function () {
+                addremove._tippy.hide();
+            }, 1000);
 
-                console.log("On remove: " + url);
-                storedURLs = storedURLs.filter(e => e !== url);
-                setVisibility(add, remove, storedURLs, url);
 
-                chrome.storage.local.set({"storedurls": storedURLs});
-
-            };
-        }
-
-        setVisibility(add, remove, storedURLs, url);
+            if (action === 'remove') {
+                setAdd(url, addremove);
+            } else {
+                setRemove(url, addremove);
+            }
+            chrome.storage.local.set({"storedurls": storedURLs});
+        };
 
         const related = document.getElementById(`related${sitenum}`);
         if (related != undefined) {
@@ -183,45 +198,54 @@ function setupButtons(locked) {
             }
         }
 
-        const lock = document.getElementById(`lock${sitenum}`);
-        const unlock = document.getElementById(`unlock${sitenum}`);
-
-        if (locked.includes(lock.getAttribute('url'))) {
-            lock.parentElement.classList.add("locked");
-        } else {
+        function showUnlock() {
             lock.parentElement.classList.remove("locked");
+            lock.firstElementChild.setAttribute('d', svgunlock);
         }
 
-        setVisible(lock, locked.includes(url));
-        setVisible(unlock, !locked.includes(url));
+        function showLock() {
+            lock.parentElement.classList.add("locked");
+            lock.firstElementChild.setAttribute('d', svglock);
+        }
 
+        const lock = document.getElementById(`lock${sitenum}`);
+
+        if (locked.includes(lock.getAttribute('url'))) {
+            showLock();
+        } else {
+            showUnlock();
+        }
 
         if (lock != undefined) {
             lock.onclick = function (e) {
                 if (lock.parentElement.classList.contains("locked")) {
-                    lock.parentElement.classList.remove("locked");
-                    lock.firstElementChild.setAttribute('d', svgunlock);
-                    locked = [];
+                    showUnlock();
+                    locked = '';
                 } else {
-                    lock.parentElement.classList.add("locked");
-                    lock.firstElementChild.setAttribute('d', svglock);
-                    locked = [url];
+                    showLock();
+                    locked = url;
                 }
-                chrome.storage.local.set({'locked': locked[0]});
+                chrome.storage.local.set({'locked': locked});
             }
         }
     });
 }
 
 function addStored(actualUrl) {
+
     chrome.storage.local.get("storedurls", function (jsonURLs) {
         storedURLs = jsonURLs.storedurls;
 
+        if (!storedURLs.includes(actualUrl)) {
+            addSite(actualUrl, sitesNum, borderColors);
+            sitesNum++;
+        }
+
         storedURLs.forEach(url => {
-            if (url !== actualUrl) {
-                addSite(url, sitesNum, borderColors);
-                sitesNum++;
-            }
+            //if (url !== actualUrl) {
+            addSite(url, sitesNum, borderColors);
+            sitesNum++;
+            //}
         });
 
         chrome.storage.local.get("locked", function (locked) {
@@ -232,7 +256,7 @@ function addStored(actualUrl) {
         });
 
         Promise.all(storedURLs.map(u => {
-            return getGitMateData(u)
+                return getGitMateData(u)
         })).then(values => {
                 addToChart(values);
             }
@@ -309,9 +333,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const url = urldata[0];
         const link = document.getElementById('old');
-
-        addSite(url, sitesNum, borderColors);
-        sitesNum++;
 
         link.href = `minisite_old.html?url=${urldata[0]}&owner=${urldata[1]}/${urldata[2]}`;
 
