@@ -148,10 +148,8 @@ function setAdd(url, addremove) {
 }
 
 function showHideChart(addremove, action) {
-
     const index = addremove.parentElement.getAttribute("id");
     chart.getDatasetMeta(index).hidden = action==='remove';
-    // meta.hidden = meta.hidden === null ? !chart.data.datasets[index].hidden : null;
     chart.update();
 }
 
@@ -206,14 +204,23 @@ function setupButtons(locked) {
             }
         }
 
+        function fillChart(index, fill){
+            if (index < chart.config.data.datasets.length){
+                chart.config.data.datasets[index].fill = fill;
+                chart.update();
+            }
+        }
+
         function showUnlock() {
             lock.parentElement.classList.remove("locked");
             lock.firstElementChild.setAttribute('d', svgunlock);
+            fillChart(lock.parentElement.getAttribute("id"), false);
         }
 
         function showLock() {
             lock.parentElement.classList.add("locked");
             lock.firstElementChild.setAttribute('d', svglock);
+            fillChart(lock.parentElement.getAttribute("id"), true);
         }
 
         const lock = document.getElementById(`lock${sitenum}`);
