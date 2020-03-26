@@ -137,7 +137,6 @@ function setRemove(url, addremove) {
     addremove._tippy.setContent("Added!");
     addremove.firstElementChild.setAttribute('d', svgremove);
     addremove.setAttribute('action', 'remove');
-    // addremove.setAttribute('data-tippy-content', 'removed!');
 }
 
 function setAdd(url, addremove) {
@@ -146,6 +145,14 @@ function setAdd(url, addremove) {
     addremove.setAttribute('action', 'add');
     addremove._tippy.setContent("Removed!");
     // addremove.setAttribute('data-tippy-content', 'added!');
+}
+
+function showHideChart(addremove, action) {
+
+    const index = addremove.parentElement.getAttribute("id");
+    chart.getDatasetMeta(index).hidden = action==='remove';
+    // meta.hidden = meta.hidden === null ? !chart.data.datasets[index].hidden : null;
+    chart.update();
 }
 
 function setupButtons(locked) {
@@ -180,10 +187,11 @@ function setupButtons(locked) {
                 addremove._tippy.hide();
             }, 1000);
 
-
             if (action === 'remove') {
+                showHideChart(addremove, action);
                 setAdd(url, addremove);
             } else {
+                showHideChart(addremove, action);
                 setRemove(url, addremove);
             }
             chrome.storage.local.set({"storedurls": storedURLs});

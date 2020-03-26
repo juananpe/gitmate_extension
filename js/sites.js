@@ -7,7 +7,7 @@ function parseHTML(html) {
 
 function addSite(url, sitesNum, borderColors) {
     const sites = document.getElementById('sites');
-    const site = `<div class"site" style="display: inline-block; margin: 4px" url="${url}">
+    const site = `<div class"site" style="display: inline-block; margin: 4px" url="${url}" id="${sitesNum}">
         ${url}<br>
         
         <svg class="addremove" action="add" fill="none" height="24" id="add${sitesNum}" url="${url}" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
