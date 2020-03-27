@@ -17,6 +17,22 @@ const svgunlock = "M8 11V7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7M12
 const svgadd = "M12 9V12M12 12V15M12 12H15M12 12H9M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
 const svgremove = "M15 12H9M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
 
+function tolikert(value, index){
+    if (index%2===0)
+        return "";
+    if (value >= 90){
+        return "Excellent";
+    } else if (value >=70){
+        return "Good";
+    } else if (value >=50){
+        return "Fair";
+    } else if (value >=30){
+        return "Poor";
+    } else {
+        return "Very Poor";
+    }
+}
+
 function setupChart(gitmateData) {
 
     const labels = Object.keys(gitmateData).filter(e => e !== 'suitability' && e !== 'project');
@@ -65,8 +81,12 @@ function setupChart(gitmateData) {
                     "scale": {
                         "ticks": {
                             "min": 0,
-                            "max": 100
-                        }
+                            "max": 100,
+                            // Include a dollar sign in the ticks
+                            callback: function(value, index, values) {
+                                return tolikert(value, index);
+                            }
+                        },
                     },
                     "legend":
                         {
