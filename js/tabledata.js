@@ -12,6 +12,14 @@ window.onload = function () {
 
     let tabla;
 
+    //Generate print icon
+    var onoffswitch = function(cell, formatterParams){ //plain text value
+        if (cell.getRow().getIndex() % 2 == 0)
+            return "<img src='/img/onswitch.png' width='30' height='20' />";
+
+        return "<img src='/img/offswitch.png' width='30' height='20' />";
+    };
+
     chrome.storage.local.get("tabledata", tablearray => {
 
         tabla = new Tabulator("#metrics-table", {
@@ -28,14 +36,15 @@ window.onload = function () {
             ],
             // groupBy: "group",
             columns: [                 //define the table columns
-                {title: "", width: 40, editor: "input", formatter:"buttonCross", width:40, align:"center", cellClick:function(e, cell){
+                {title: "", width: 40, editor: "input", formatter: onoffswitch, width:40, align:"center", cellClick:function(e, cell){
                         cell.getRow().delete();
                     }},
-                {title: "Name", field: "name"},
+                {title: "Metric", field: "name"},
                 {title: "Excellent (1p)", field: "A", width: 140, editor: "input"},
                 {title: "Good (0.75)", field: "B", width: 160, editor: "input"},
                 {title: "Fair (0.5)", field: "C", width: 140, editor: "input"},
                 {title: "Poor (0.25)", field: "D", width: 140, editor: "input"},
+                {title: "Very Poor (0)", field: "E", width: 140, editor: "input"},
                 {title: "Weight", field: "W", width: 100, editor: "input"},
             ],
         });

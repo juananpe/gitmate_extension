@@ -20,9 +20,9 @@ function createTable(project) {
 </style>
 <table id="related">
     <tr>
-    <th>Project</th>
+    <th>Related Project</th>
     <th>Description</th>
-    <th>GitMate Index</th>
+    <th>Similarity Index</th>
     <th># stars</th>
 `;
 
