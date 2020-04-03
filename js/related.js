@@ -39,7 +39,7 @@ function createTable(project) {
                 </tr> </table>`;
 
         return bodyTemplate;
-    });
+    }).catch(reason => { console.log(reason)});
 
 }
 

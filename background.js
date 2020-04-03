@@ -36,16 +36,15 @@ function getPR(url, tabId) {
                 // console.log("Set value:" + url + ':' + value);
             });
 
-            updatePR(data.suitability.toString(), url, tabId);
+            updatePR(data.suitability, url, tabId);
         });
 
     });
 }
 
 function showPR(url, tabId) {
-	console.log('url:'+url+', tabId:'+tabId);
 	if(url) {
-		var domain = url.match(/^(http|https):\/\/([\w.]+)(:\d+)?/);
+		const domain = url.match(/^(http|https):\/\/([\w.]+)(:\d+)?/);
 		if(domain != null) {
 			getPR(url, tabId);
         }
@@ -54,6 +53,7 @@ function showPR(url, tabId) {
 
 function updatePR(value, url, tabId) {
     // console.log("v:"+ value, "u:" + url, "t:" + tabId);
+    value = (value*10).toFixed(1);
 	chrome.browserAction.setBadgeText({text: value, 'tabId': tabId});
 	chrome.browserAction.setBadgeBackgroundColor({color: value == '?' ? [190, 190, 190, 230] : [208, 0, 24, 255], 'tabId': tabId});
 	chrome.browserAction.setTitle({title: value == '?' ? 'Page has no PR' : url + ' has PR ' + value, 'tabId': tabId});

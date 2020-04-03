@@ -184,8 +184,9 @@ function setupButtons(locked) {
 
     const relatedDiv = document.getElementById("related");
 
-    // FIXME: this is ugly
-    [0, 1, 2, 3].forEach(sitenum => {
+    console.log("length:" + storedURLs.length);
+
+    for (let sitenum = 0; /* <= is OK, not < */ sitenum <= storedURLs.length; sitenum++) {
         const addremove = document.getElementById(`add${sitenum}`);
         if (!addremove) return;
         const url = addremove.getAttribute("url");
@@ -219,6 +220,9 @@ function setupButtons(locked) {
         if (related != undefined) {
             related.onclick = function (e) {
                 showRelated(related).then(table => {
+                    if (typeof table == "undefined"){
+                        table = "Related data not available."
+                    }
                     relatedDiv.innerHTML = table;
                 });
             }
@@ -263,7 +267,7 @@ function setupButtons(locked) {
                 chrome.storage.local.set({'locked': locked});
             }
         }
-    });
+    };
 }
 
 function addStored(actualUrl) {

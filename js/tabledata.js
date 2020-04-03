@@ -16,8 +16,9 @@ window.onload = function () {
     var onoffswitch = function (cell, formatterParams) {
         if (cell.getValue())
             return "<img src='/img/onswitch.png' width='30' height='20' />";
-
-        return "<img src='/img/offswitch.png' width='30' height='20' />";
+        else {
+            return "<img src='/img/offswitch.png' width='30' height='20' />";
+        }
     };
 
     chrome.storage.local.get("tabledata", tablearray => {
@@ -44,6 +45,8 @@ window.onload = function () {
                     formatter: onoffswitch,
                     align: "center",
                     cellClick: function (e, cell) {
+                        if (cell.getValue())
+                            cell.getRow().getCell("W").setValue("0.0");
                         cell.setValue(!cell.getValue());
                     }
                 },
