@@ -86,7 +86,7 @@ chrome.runtime.onInstalled.addListener(function() {
     let tabledata = [
         {id: 1, name: "popularity", A: "v>=500", B: "v>=400", C: "v>=300", D: "v>=200", E: "v>=0", W: "1", range: ">300", enabled: true},
         {id: 2, name: "workForce", A: "v>=10 ", B: "v>8", C: "v>6", D: "v>4", E: "v>=0",W: "1", range: ">6", enabled: true},
-        {id: 3, name: "recentActivity", A: "v<=2", B: "v<=7", C: "v>7 and v<=14", D: "v<= 21", E: "v>=0", W: "1", range: "[7-14]", enabled: true},
+        {id: 3, name: "recentActivity", A: "v<=2", B: "v<=7", C: "v>7 and v<=14", D: "v<= 21", E: "v>=0", W: "1", range: ">7", enabled: true},
         {id: 4, name: "continuousActivity", A: "v>40", B: "v>30", C: "v>20", D: "v>10", E: "v>=0",W: "1", range: ">20", enabled: true},
         {id: 5, name: "forkDegree", A: "v>50", B: "v>40", C: "v>30", D: "v>20", E: "v>=0", W: "1", range: ">30", enabled: true},
         {id: 6, name: "beginnerFriendly", A: "v>10", B: "v>8", C: "v>6", D: "v>4", E: "v>=0",W: "1", range: ">6", enabled: true},

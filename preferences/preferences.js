@@ -9,6 +9,11 @@ var GitMate_Preferences = {
 	};
 
 document.getElementById("savemetrics").onclick = function(){
+	Swal.fire(
+		'Values saved!',
+		'The new values will be applied immediately',
+		'success'
+	);
 	chrome.storage.local.set({"tabledata": GitMate_Preferences.table.getData()});
 };
 
