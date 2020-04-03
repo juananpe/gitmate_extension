@@ -26,6 +26,7 @@ window.onload = function () {
             data:   tablearray.tabledata,           //load row data from array
 
             responsiveLayout: "hide",  //hide columns that dont fit on the table
+            layout:"fitData",
             tooltips: true,            //show tool tips on cells
             addRowPos: "top",          //when adding a new row, add it to the top of the table
             history: true,             //allow undo and redo actions on the table
@@ -36,16 +37,17 @@ window.onload = function () {
             ],
             // groupBy: "group",
             columns: [                 //define the table columns
-                {title: "", width: 40, editor: "input", formatter: onoffswitch, width:40, align:"center", cellClick:function(e, cell){
+                {title: "", width: 40, editor: "input", formatter: onoffswitch, align:"center", cellClick:function(e, cell){
                         cell.getRow().delete();
                     }},
+                {title: "Range", field: "range", editor: "input"},
                 {title: "Metric", field: "name"},
-                {title: "Excellent (1p)", field: "A", width: 140, editor: "input"},
-                {title: "Good (0.75)", field: "B", width: 160, editor: "input"},
-                {title: "Fair (0.5)", field: "C", width: 140, editor: "input"},
-                {title: "Poor (0.25)", field: "D", width: 140, editor: "input"},
-                {title: "Very Poor (0)", field: "E", width: 140, editor: "input"},
-                {title: "Weight", field: "W", width: 100, editor: "input"},
+                {title: "Excellent (1p)", field: "A", editor: "input"},
+                {title: "Good (0.75)", field: "B", editor: "input"},
+                {title: "Fair (0.5)", field: "C", editor: "input"},
+                {title: "Poor (0.25)", field: "D", editor: "input"},
+                {title: "Very Poor (0)", field: "E", editor: "input"},
+                {title: "Weight", field: "W", editor: "input"},
             ],
         });
         GitMate_Preferences.table = tabla;
