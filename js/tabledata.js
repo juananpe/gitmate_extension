@@ -13,8 +13,8 @@ window.onload = function () {
     let tabla;
 
     //Generate print icon
-    var onoffswitch = function(cell, formatterParams){ //plain text value
-        if (cell.getRow().getIndex() % 2 == 0)
+    var onoffswitch = function (cell, formatterParams) {
+        if (cell.getValue())
             return "<img src='/img/onswitch.png' width='30' height='20' />";
 
         return "<img src='/img/offswitch.png' width='30' height='20' />";
@@ -23,10 +23,10 @@ window.onload = function () {
     chrome.storage.local.get("tabledata", tablearray => {
 
         tabla = new Tabulator("#metrics-table", {
-            data:   tablearray.tabledata,           //load row data from array
+            data: tablearray.tabledata,           //load row data from array
 
             responsiveLayout: "hide",  //hide columns that dont fit on the table
-            layout:"fitData",
+            layout: "fitData",
             tooltips: true,            //show tool tips on cells
             addRowPos: "top",          //when adding a new row, add it to the top of the table
             history: true,             //allow undo and redo actions on the table
@@ -37,9 +37,16 @@ window.onload = function () {
             ],
             // groupBy: "group",
             columns: [                 //define the table columns
-                {title: "", width: 40, editor: "input", formatter: onoffswitch, align:"center", cellClick:function(e, cell){
-                        cell.getRow().delete();
-                    }},
+                {
+                    title: "",
+                    field: "enabled",
+                    width: 40,
+                    formatter: onoffswitch,
+                    align: "center",
+                    cellClick: function (e, cell) {
+                        cell.setValue(!cell.getValue());
+                    }
+                },
                 {title: "Range", field: "range", editor: "input"},
                 {title: "Metric", field: "name"},
                 {title: "Excellent (1p)", field: "A", editor: "input"},
